@@ -1,2 +1,2 @@
-# advent-of-code-2024
+# Advent Of Code 2024
 Advent of Code 2024 solutions in Haskell
