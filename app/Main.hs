@@ -6,7 +6,7 @@ import Day01
 type StringsToNumber = [String] -> Int
 
 dayTable :: [(String, StringsToNumber)]
-dayTable = [("day01", day01_part1)]
+dayTable = [("day01_part1", day01_part1), ("day01_part2", day01_part2)]
 
 main :: IO ()
 main = do
