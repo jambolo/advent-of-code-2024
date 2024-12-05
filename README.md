@@ -3,4 +3,8 @@ Advent of Code 2024 solutions in Haskell. The development environment is VSCode 
 
 ### Day 1
 
-In general terms, the solution for both parts of day 1 is trivial, but wow Haskell has a *steep* learning curve.
+In general terms, the solution for both parts of day 1 is trivial, but wow Haskell has a *steep* learning curve. Github Copilot is a savior.
+
+### Day 2
+
+Part 1 was trivial again and the biggest difficulty was dealing with Haskell. I tried to implement part 2 using recursion, but I couldn't get it to work. I gave up and implemented a more brute force O(n<sup>2</sup>) solution that I feel is not in the spirit of Haskell. I'm curious to see a real Haskell solution.

@@ -37,6 +37,7 @@ library:
   source-dirs: src
   exposed-modules:
   - Day01
+  - Day02
 
 executables:
   AdventOfCode2024:

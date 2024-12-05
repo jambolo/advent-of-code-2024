@@ -1,12 +1,18 @@
 module Main (main) where
 
 import System.Environment (getArgs)
-import Day01
+import Day01 (day01_part1, day01_part2)
+import Day02 (day02_part1, day02_part2)
 
-type StringsToNumber = [String] -> Int
+type StringsToNumber = [String] -> IO Int
 
 dayTable :: [(String, StringsToNumber)]
-dayTable = [("day01_part1", day01_part1), ("day01_part2", day01_part2)]
+dayTable = [
+    ("day01_part1", day01_part1),
+    ("day01_part2", day01_part2),
+    ("day02_part1", day02_part1),
+    ("day02_part2", day02_part2)
+    ]
 
 main :: IO ()
 main = do
@@ -19,7 +25,7 @@ main = do
             case lookup day dayTable of
                 Nothing -> error $ "Unknown day: " ++ day
                 Just solution -> do
-                    let result = solution linesOfInput
+                    result <- solution linesOfInput
                     putStrLn $ day ++ " solution: " ++ show result
           
         _ -> error "Usage: AdventOfCode2024 <day> <input file name>"
