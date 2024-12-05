@@ -35,9 +35,11 @@ ghc-options:
 
 library:
   source-dirs: src
+  exposed-modules:
+  - Day01
 
 executables:
-  AdventOfCode2024-exe:
+  AdventOfCode2024:
     main:                Main.hs
     source-dirs:         app
     ghc-options:
