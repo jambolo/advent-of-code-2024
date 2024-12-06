@@ -22,8 +22,9 @@ parseLines = foldr parseLine ([], [])
 sorted :: ([Int], [Int]) -> ([Int], [Int])
 sorted (left, right) = (sort left, sort right)
 
-day01_part1 :: [String] -> IO Int
-day01_part1 inputLines = return $ sumOfDifferences $ sorted $ parseLines inputLines
+day01_part1 :: String -> IO Int
+day01_part1 input = return $ sumOfDifferences $ sorted $ parseLines $ lines input
+
 
 countOccurrences :: ([Int], [Int]) -> [(Int, Int)]
 countOccurrences (left, right) = map (\x -> (x, count x right)) left
@@ -33,5 +34,5 @@ countOccurrences (left, right) = map (\x -> (x, count x right)) left
 similarity :: [(Int, Int)] -> Int
 similarity = foldr (\(x, y) acc -> x * y + acc) 0
 
-day01_part2 :: [String] -> IO Int
-day01_part2 inputLines = return $ similarity $ countOccurrences $ parseLines inputLines
+day01_part2 :: String -> IO Int
+day01_part2 input = return $ similarity $ countOccurrences $ parseLines $ lines input

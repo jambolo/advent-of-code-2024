@@ -30,8 +30,8 @@ parseLines = map (map readInt . words)
 countSafe :: [Bool] -> Int
 countSafe = length . filter id
 
-day02_part1 :: [String] -> IO Int
-day02_part1 inputLines = return $ countSafe $ map safeReport $ parseLines inputLines
+day02_part1 :: String -> IO Int
+day02_part1 input = return $ countSafe $ map safeReport $ parseLines $ lines input
 
 removeEach :: [Int] -> [[Int]]
 removeEach [] = [] -- If the list is empty, return an empty list
@@ -46,5 +46,5 @@ tolerablyFalling report = fallingSafely report || any fallingSafely (removeEach 
 tolerablySafeReport :: [Int] -> Bool
 tolerablySafeReport report = tolerablyRising report || tolerablyFalling report
 
-day02_part2 :: [String] -> IO Int
-day02_part2 inputLines = return $ countSafe $ map tolerablySafeReport $ parseLines inputLines
+day02_part2 :: String -> IO Int
+day02_part2 input = return $ countSafe $ map tolerablySafeReport $ parseLines $ lines input
