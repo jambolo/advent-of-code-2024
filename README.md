@@ -17,5 +17,4 @@ Trivial again. Luckily, Haskell has a regex library and the solution wasn't too 
 Trivial. I added a little cleverness, but otherwise I just did it in a strightforward way. I'm glad Haskell has some comprehension and range support.
 
 ### Day 5
-Seems simple enough.
-
+Simple enough. Haskell seems to have a decent collection of containers.
