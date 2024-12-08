@@ -12,3 +12,10 @@ Part 1 was trivial again and the biggest difficulty was dealing with Haskell. I 
 ### Day 3
 
 Trivial again. Luckily, Haskell has a regex library and the solution wasn't too hard to figure out once I figured out how to use the regex library.
+
+### Day 4
+Trivial. I added a little cleverness, but otherwise I just did it in a strightforward way. I'm glad Haskell has some comprehension and range support.
+
+### Day 5
+Seems simple enough.
+
