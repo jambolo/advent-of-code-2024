@@ -14,7 +14,14 @@ Part 1 was trivial again and the biggest difficulty was dealing with Haskell. I 
 Trivial again. Luckily, Haskell has a regex library and the solution wasn't too hard to figure out once I figured out how to use the regex library.
 
 ### Day 4
-Trivial. I added a little cleverness, but otherwise I just did it in a strightforward way. I'm glad Haskell has some comprehension and range support.
+Trivial. I added a little cleverness, but otherwise I just did it in a straightforward way. I'm glad Haskell has some comprehension and range support.
 
 ### Day 5
 Simple enough. Haskell seems to have a decent collection of containers.
+
+### Day 6
+I started to develop an optimized solution because I was afraid that part 2 would require it. It was taking a long time to implement, so I just implemented the simple solution and that turned out to be ok.
+
+My initial solution for part 2 was too low. I did not put an obstacle at the starting point because that didn't seem to make sense. But, when I included an obstacle at the starting point, I got the correct answer. I'm not happy about that.
+
+Haskell insisted that I change a complex (though straightforward) if-then-else structure returning Bool to an equivalent complicated logical expression. I prefer the if-then-else because it is much easier to read, but Haskell kept insisting so I acquiesced.

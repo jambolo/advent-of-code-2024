@@ -6,6 +6,7 @@ import Day02 (day02_part1, day02_part2)
 import Day03 (day03_part1, day03_part2)
 import Day04 (day04_part1, day04_part2)
 import Day05 (day05_part1, day05_part2)
+import Day06 (day06_part1, day06_part2)
 
 type PuzzleInputToInt = String -> IO Int
 
@@ -20,7 +21,9 @@ dayTable = [
     ("day04_part1", day04_part1),
     ("day04_part2", day04_part2),
     ("day05_part1", day05_part1),
-    ("day05_part2", day05_part2)
+    ("day05_part2", day05_part2),
+    ("day06_part1", day06_part1),
+    ("day06_part2", day06_part2)
     ]
 
 main :: IO ()
