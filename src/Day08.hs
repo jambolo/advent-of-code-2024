@@ -54,7 +54,7 @@ findAntinodes area antennas =
     let bounds = Array.bounds area
     in
         foldr (\p acc ->
-            let a = antinode (fst p) (snd p)
+            let a = uncurry antinode p
             in
                 if Array.inRange bounds a
                 then Set.insert a acc
@@ -85,7 +85,7 @@ harmonic area (x1, y1) (x2, y2) = harmonicRecursive area (x1, y1) (x2, y2) 0
 findHarmonics :: Array2OfChar -> AntennaMap -> NodeSet
 findHarmonics area antennas =
     foldr (\p acc ->
-        let hs = harmonic area (fst p) (snd p)
+        let hs = uncurry (harmonic area) p
         in
             Set.union (Set.fromList hs) acc
     ) Set.empty (concatMap permutations (Map.elems antennas))

@@ -10,7 +10,7 @@ parseLines = map parseLine
     where
         parseLine s =
             case splitOn ":" s of
-                [result, operands] -> (read result, map (read) (words operands))
+                [result, operands] -> (read result, map read (words operands))
                 _ -> error "Invalid input"
 
 testRecursive :: Int -> Int -> [Int] -> Bool
@@ -24,7 +24,7 @@ testComputation :: (Int, [Int]) -> Bool
 testComputation (result, operands) = testRecursive result (head operands) (tail operands)
 
 nextPowerOf10 :: Int -> Int
-nextPowerOf10 n = head [10^x | x <- [1..], 10^x > n]
+nextPowerOf10 n = head [10^x | x <- [1..] :: [Int], 10^x > n]
 
 concatenate :: Int -> Int -> Int
 concatenate a b = a * nextPowerOf10 b + b
