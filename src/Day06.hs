@@ -25,13 +25,9 @@ findStart :: Array2OfChar -> Maybe ((Int, Int), Char)
 findStart area = 
     let bounds = Array.bounds area
         guardSymbols = ">^<v"
-    in
-        foldr (\idx acc ->
-            let symbol = area Array.! idx
-            in
-                if symbol `elem` guardSymbols
-                then Just (idx, symbol)
-                else acc
+    in foldr (\idx acc ->
+        let symbol = area Array.! idx
+        in if symbol `elem` guardSymbols then Just (idx, symbol) else acc
         ) Nothing (Array.range bounds)
 
 rightTurn :: Char -> Char
@@ -50,26 +46,22 @@ step (i, j) facing = case facing of
     'v' -> (i + 1, j)
     _ -> error "Invalid facing"
     
-travelRecursive :: Array2OfChar -> (Int, Int) -> Char -> VisitedMap -> VisitedMap
-travelRecursive area location facing visited =
-    let visited' = Map.insertWith Set.union location (Set.singleton facing) visited
-        bounds = Array.bounds area
-        location' = step location facing
-    in
-        if Array.inRange bounds location'
-        then -- turn or move to next cell
-            if area Array.! location' == '#'
-            then -- don't move, just turn right
-                let facing' = rightTurn facing
-                in travelRecursive area location facing' visited'
-            else -- move to next cell
-                travelRecursive area location' facing visited'
-        else -- done, return all the visited cells and their facings
-            visited'
 
 travel :: Array2OfChar -> (Int, Int) -> Char -> VisitedMap
-travel area start facing = 
-    travelRecursive area start facing Map.empty
+travel area start initialFacing =
+    next start initialFacing Map.empty
+    where
+        next :: (Int, Int) -> Char -> VisitedMap -> VisitedMap
+        next location facing visited =
+            let visited' = Map.insertWith Set.union location (Set.singleton facing) visited
+                bounds = Array.bounds area
+                location' = step location facing
+            in if Array.inRange bounds location'
+                then if area Array.! location' == '#'
+                    then let facing' = rightTurn facing
+                        in next location facing' visited'
+                    else next location' facing visited'
+                else visited'
 
 day06_part1 :: String -> IO Int
 day06_part1 input = do
@@ -80,31 +72,22 @@ day06_part1 input = do
     let visited = travel area start facing
     return $ length visited
 
-findCycleRecursive :: Array2OfChar -> (Int, Int) -> Char -> VisitedMap -> Bool
-findCycleRecursive area location facing visited =
-    Map.member location visited && Set.member facing (visited Map.! location)
-    ||
-    (
-        let visited' = Map.insertWith Set.union location (Set.singleton facing) visited
-            bounds = Array.bounds area
-            location' = step location facing
-        in
-            Array.inRange bounds location'
-            && -- move to next cell or turn
-            (
-                if area Array.! location' == '#'
-                then -- don't move, just turn right
-                    findCycleRecursive area location (rightTurn facing) visited'
-                else -- move to next cell
-                    findCycleRecursive area location' facing visited'
-            )
-    )
-
-findCycle :: Array2OfChar -> (Int, Int) -> Char -> (Int, Int) -> Bool
-findCycle area start facing k =
-    let area' = area Array.// [(k, '#')]
-    in
-        findCycleRecursive area' start facing Map.empty
+findCycle :: Array2OfChar -> (Int, Int) -> Char -> Bool
+findCycle area start initialFacing =
+    next start initialFacing Map.empty
+    where
+        next :: (Int, Int) -> Char -> VisitedMap -> Bool
+        next location facing visited =
+            Map.member location visited && Set.member facing (visited Map.! location) ||
+            let visited' = Map.insertWith Set.union location (Set.singleton facing) visited
+                bounds = Array.bounds area
+                location' = step location facing
+            in Array.inRange bounds location' && -- move to next cell or turn
+                (if area Array.! location' == '#'
+                    then -- don't move, just turn right
+                        next location (rightTurn facing) visited'
+                    else -- move to next cell
+                        next location' facing visited')
 
 day06_part2 :: String -> IO Int
 day06_part2 input = do
@@ -113,4 +96,4 @@ day06_part2 input = do
             Just (s, f) -> (s, f)
             _ -> error "No starting point found"
     let visited = travel area start facing
-    return $ length $ filter id $ [findCycle area start facing k | k <- Map.keys visited]
+    return $ length $ filter id $ [findCycle (area Array.// [(k, '#')]) start facing | k <- Map.keys visited]

@@ -37,20 +37,20 @@ middleValue a = a !! (length a `div` 2)
 anyInFound :: FoundSet -> [Int] -> Bool
 anyInFound set = any (`Set.member` set)
 
-orderIsValidRecursive :: AfterMap -> FoundSet -> [Int] -> Bool
-orderIsValidRecursive _ _ [] = True
-orderIsValidRecursive afterMap found (x:xs) = 
-    case Map.lookup x afterMap of
-        -- If the page is in the ordering rules
-        Just after -> 
-            -- then if any of the after values have already been encountered
-            not (anyInFound found after)
-            && orderIsValidRecursive afterMap (Set.insert x found) xs
-        -- If the page is not in the ordering rules then just continue
-        Nothing -> orderIsValidRecursive afterMap (Set.insert x found) xs
-
 orderIsValid :: AfterMap -> [Int] -> Bool
-orderIsValid afterMap = orderIsValidRecursive afterMap Set.empty
+orderIsValid afterMap =
+    next Set.empty
+    where
+        next :: FoundSet -> [Int] -> Bool
+        next _ [] = True
+        next found (x:xs) = 
+            case Map.lookup x afterMap of
+                -- If the page is in the ordering rules
+                Just after -> 
+                    -- then if any of the after values have already been encountered
+                    not (anyInFound found after) && next (Set.insert x found) xs
+                -- If the page is not in the ordering rules then just continue
+                Nothing -> next (Set.insert x found) xs
 
 day05_part1 :: String -> IO Int
 day05_part1 input = do

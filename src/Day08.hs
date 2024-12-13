@@ -68,24 +68,20 @@ day08_part1 input = do
     let antinodes = findAntinodes area antennas
     return $ length antinodes
 
-harmonicRecursive :: Array2OfChar -> (Int, Int) -> (Int, Int) -> Int -> [(Int, Int)]
-harmonicRecursive area (x1, y1) (x2, y2) n =
+harmonic :: Array2OfChar -> ((Int, Int), (Int, Int)) -> [(Int, Int)]
+harmonic area ((x1, y1), (x2, y2)) =
     let dx = x2 - x1
         dy = y2 - y1
-        x = x2 + dx * n
-        y = y2 + dy * n
+        next (x, y) acc
+            | Array.inRange (Array.bounds area) (x, y) = next (x + dx, y + dy) ((x, y) : acc)
+            | otherwise = acc
     in
-        if Array.inRange (Array.bounds area) (x, y)
-        then (x, y) : harmonicRecursive area (x1, y1) (x2, y2) (n + 1)
-        else []
-
-harmonic :: Array2OfChar -> (Int, Int) -> (Int, Int) -> [(Int, Int)]
-harmonic area (x1, y1) (x2, y2) = harmonicRecursive area (x1, y1) (x2, y2) 0
+        next (x2, y2) []
 
 findHarmonics :: Array2OfChar -> AntennaMap -> NodeSet
 findHarmonics area antennas =
     foldr (\p acc ->
-        let hs = uncurry (harmonic area) p
+        let hs = harmonic area p
         in
             Set.union (Set.fromList hs) acc
     ) Set.empty (concatMap permutations (Map.elems antennas))
