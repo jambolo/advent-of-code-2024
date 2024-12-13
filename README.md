@@ -31,3 +31,6 @@ Super easy. I learned a little more about comprehensions, specifically this tric
 
 ### Day 8
 I encountered what I feel is problem with Haskell. It seems wrong to me that `head [10^x | x <- [1..], 10^x > n]` terminates, when `[10^x | x <- [1..], 10^x > n]` does not.
+
+### Day 9
+Performance is going to be critical for this problem. I found that building a 94422 element list by *appending* elements takes 16000 ms, but building the list by *prepending* elements and then reversing takes 6 ms.

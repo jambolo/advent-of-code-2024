@@ -72,8 +72,9 @@ harmonic :: Array2OfChar -> ((Int, Int), (Int, Int)) -> [(Int, Int)]
 harmonic area ((x1, y1), (x2, y2)) =
     let dx = x2 - x1
         dy = y2 - y1
+        bounds = Array.bounds area
         next (x, y) acc
-            | Array.inRange (Array.bounds area) (x, y) = next (x + dx, y + dy) ((x, y) : acc)
+            | Array.inRange bounds (x, y) = next (x + dx, y + dy) ((x, y) : acc)
             | otherwise = acc
     in
         next (x2, y2) []
