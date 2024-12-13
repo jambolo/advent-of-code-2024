@@ -41,4 +41,4 @@ extractEnabled = next True []
 day03_part2 :: String -> IO Int
 day03_part2 input = do
     let matches = getAllTextMatches (input =~ switchedMulRE) :: [String]
-    return $ sum $ map executeMul$ map parseMul $ extractEnabled matches
+    return $ sum $ map (executeMul . parseMul) (extractEnabled matches)

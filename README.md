@@ -25,3 +25,6 @@ I started to develop an optimized solution because I was afraid that part 2 woul
 My initial solution for part 2 was too low. I did not put an obstacle at the starting point because that didn't seem to make sense. But, when I included an obstacle at the starting point, I got the correct answer. I'm not happy about that.
 
 Haskell insisted that I change a complex (though straightforward) if-then-else structure returning Bool to an equivalent complicated logical expression. I prefer the if-then-else because it is much easier to read, but Haskell kept insisting so I acquiesced.
+
+### Day 7
+Super easy. I learned a little more about comprehensions, specifically this trickery: `nextPowerOf10 n = head [10^x | x <- [1..], 10^x > n]`

@@ -25,6 +25,7 @@ dependencies:
 - array
 - containers
 - split
+- time
 
 ghc-options:
 - -Wall
@@ -46,6 +47,7 @@ library:
   - Day04
   - Day05
   - Day06
+  - Day07
 
 executables:
   AdventOfCode2024:
