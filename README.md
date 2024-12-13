@@ -28,3 +28,6 @@ Haskell insisted that I change a complex (though straightforward) if-then-else s
 
 ### Day 7
 Super easy. I learned a little more about comprehensions, specifically this trickery: `nextPowerOf10 n = head [10^x | x <- [1..], 10^x > n]`
+
+### Day 8
+I encountered what I feel is problem with Haskell. It seems wrong to me that `head [10^x | x <- [1..], 10^x > n]` terminates, when `[10^x | x <- [1..], 10^x > n]` does not.
