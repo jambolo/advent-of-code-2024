@@ -36,3 +36,6 @@ I encountered what I feel is problem with Haskell. It seems wrong to me that `he
 Performance is going to be critical for this problem. I found that building a 94422 element list by *appending* elements takes 16000 ms, but building the list by *prepending* elements and then reversing takes 6 ms.
 
 Part 1 took about 50 seconds to execute. Surprisingly, part 2 only took 15 seconds. I think it was because I was able to organize the sectors into buckets in part 2, making the size of the list 65%-80% smaller.
+
+### Day 10
+Pretty easy again. I think Haskell is suited for this kind of recursive problem.
