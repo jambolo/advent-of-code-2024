@@ -39,3 +39,6 @@ Part 1 took about 50 seconds to execute. Surprisingly, part 2 only took 15 secon
 
 ### Day 10
 Pretty easy again. I think Haskell is suited for this kind of recursive problem.
+
+### Day 11
+Part 2 has a clever solution. 
