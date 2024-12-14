@@ -42,3 +42,10 @@ Pretty easy again. I think Haskell is suited for this kind of recursive problem.
 
 ### Day 11
 Part 2 has a clever solution. 
+
+
+
+
+
+
+### Day 14

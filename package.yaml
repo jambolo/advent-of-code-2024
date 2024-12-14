@@ -53,6 +53,8 @@ library:
   - Day10
   - Day11
 
+
+  - Day14
 executables:
   AdventOfCode2024:
     main:                Main.hs
