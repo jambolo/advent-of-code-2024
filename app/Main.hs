@@ -15,8 +15,7 @@ import Day09 (day09_part1, day09_part2)
 import Day10 (day10_part1, day10_part2)
 import Day11 (day11_part1, day11_part2)
 import Day12 (day12_part1, day12_part2)
-
-
+import Day13 (day13_part1, day13_part2)
 import Day14 (day14_part1, day14_part2)
 
 type PuzzleInputToInt = String -> IO Int
@@ -47,8 +46,8 @@ dayTable = [
     ("day11_part2", day11_part2),
     ("day12_part1", day12_part1),
     ("day12_part2", day12_part2),
-
-
+    ("day13_part1", day13_part1),
+    ("day13_part2", day13_part2),
     ("day14_part1", day14_part1),
     ("day14_part2", day14_part2)
     ]

@@ -46,7 +46,7 @@ Part 2 has a clever solution.
 ### Day 12
 Pretty easy, though some minor errors were hard to find.
 
-
-
+### Day 13
+Number theory is not my strength, but luckily I suspected that there is a known solution to this kind of problem and it turns out that there is. Unfortunately, it is not fast enough for part 2.
 
 ### Day 14
