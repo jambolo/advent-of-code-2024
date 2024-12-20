@@ -54,3 +54,7 @@ Number theory is not my strength, but luckily I suspected that there is a known 
 
 ### Day 15
 Part 1 was pretty easy. I am getting more comfortable with Haskell's ways of doing iteration using recursion.
+
+### Day 16
+Simple pathfinding with a slight twist. I ended up using someone else's A* library because implementing A* is always a non-trivial task and implementing it in Haskell would take a very long time. Unfortunately, that won't work for part 2 because I need to return *all possible* paths of with the shortest length. I'm starting to like Haskell less because the code is necessarily very complex and debugging is very cumbersome.
+

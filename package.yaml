@@ -26,6 +26,8 @@ dependencies:
 - containers
 - split
 - time
+- astar
+- unordered-containers
 
 ghc-options:
 - -Wall
@@ -56,6 +58,8 @@ library:
   - Day13
   - Day14
   - Day15
+  - Day16
+
 executables:
   AdventOfCode2024:
     main:                Main.hs
