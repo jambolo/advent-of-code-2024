@@ -50,3 +50,7 @@ Pretty easy, though some minor errors were hard to find.
 Number theory is not my strength, but luckily I suspected that there is a known solution to this kind of problem and it turns out that there is. Unfortunately, it is not fast enough for part 2.
 
 ### Day 14
+
+
+### Day 15
+Part 1 was pretty easy. I am getting more comfortable with Haskell's ways of doing iteration using recursion.
