@@ -22,8 +22,8 @@ width = 101
 height = 103
 
 -- Load robots from input
-loadRobots :: [String] -> [Robot]
-loadRobots = map loadRobot
+loadRobots :: String -> [Robot]
+loadRobots input= map loadRobot $ lines input
     where
         loadRobot :: String -> Robot
         loadRobot string =
@@ -51,7 +51,6 @@ printMap robots = do
         setRow :: [Char] -> Int -> [Char]
         setRow r x = take x r ++ ['X'] ++ drop (x + 1) r
 -}
-
 -- Counts the number of robots in each quadrant
 census :: [Robot] -> (Int, Int, Int, Int)
 census = foldl count (0, 0, 0, 0)
@@ -71,7 +70,7 @@ safetyFactor (q1, q2, q3, q4) = q1 * q2 * q3 * q4
 -- Part 1
 day14_part1 :: String -> IO [Int]
 day14_part1 input = do
-    let robots = loadRobots (lines input)
+    let robots = loadRobots input
 --    print robots
 --    printMap robots
     let movedRobots = moveRobots 100 robots
@@ -82,7 +81,30 @@ day14_part1 input = do
     let result = safetyFactor c
     return [result]
 
+-- Returns a score for the robots weighted such that robots closer to the center are worth more
+evaluate :: [Robot] -> Int
+evaluate robots = sum $ map (\(Robot (px, py) _) -> width - abs (width - 2 * px) + height - abs (height - 2 * py)) robots
+
+-- Simulate the robots for 10000 steps looking for the best score
+simulate :: [Robot] -> Int -> Int
+simulate robots limit = go 1 0 0
+        where
+            go :: Int -> Int -> Int -> Int
+            go n best threshold
+                | n > limit = best
+                | otherwise =
+                    let robots' = moveRobots n robots
+                        t = evaluate robots'
+                    in if t > threshold
+                        then go (n + 1) n t
+                        else go (n + 1) best threshold
+
+
 -- Part 2
 day14_part2 :: String -> IO [Int]
 day14_part2 input = do
-    return []
+    let robots = loadRobots input
+    let count = simulate robots 10000
+--    let movedRobots = moveRobots count robots
+--    print movedRobots
+    return [count]

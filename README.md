@@ -50,7 +50,7 @@ Pretty easy, though some minor errors were hard to find.
 Number theory is not my strength, but luckily I suspected that there is a known solution to this kind of problem and it turns out that there is. Unfortunately, it is not fast enough for part 2. It turns out that solving a linear Diophantine equation was the wrong approach, and the simple (and obvious to many but not me) solution was to solve the system of linear equations and accepting only integer solutions.
 
 ### Day 14
-
+The key to many of these problems is the mod operator. For part 2, I computed a weighted sum of the robot locations and I saved the count every time the sum was greater than the previous maximum. The best map shows a tree in the center of the map.
 
 ### Day 15
 Part 1 was pretty easy. I am getting more comfortable with Haskell's ways of doing iteration using recursion.
