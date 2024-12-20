@@ -47,7 +47,7 @@ Part 2 has a clever solution.
 Pretty easy, though some minor errors were hard to find.
 
 ### Day 13
-Number theory is not my strength, but luckily I suspected that there is a known solution to this kind of problem and it turns out that there is. Unfortunately, it is not fast enough for part 2.
+Number theory is not my strength, but luckily I suspected that there is a known solution to this kind of problem and it turns out that there is. Unfortunately, it is not fast enough for part 2. It turns out that solving a linear Diophantine equation was the wrong approach, and the simple (and obvious to many but not me) solution was to solve the system of linear equations and accepting only integer solutions.
 
 ### Day 14
 

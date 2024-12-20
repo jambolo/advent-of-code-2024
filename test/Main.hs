@@ -89,7 +89,7 @@ test12_2 = TestCase (assertEqual "Day 12, part 2" [841934]            (run day12
 test13_1 :: Test
 test13_1 = TestCase (assertEqual "Day 13, part 1" [29023]             (run day13_part1 "input/day13-input.txt"))
 test13_2 :: Test
-test13_2 = TestCase (assertNotImplemented "Day 13, part 2" []         (run day13_part2 "input/day13-input.txt"))
+test13_2 = TestCase (assertEqual "Day 13, part 2" [96787395375634]    (run day13_part2 "input/day13-input.txt"))
 test14_1 :: Test
 test14_1 = TestCase (assertEqual "Day 14, part 1" [230900224]         (run day14_part1 "input/day14-input.txt"))
 test14_2 :: Test

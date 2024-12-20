@@ -6,11 +6,12 @@ module Day13 (
 import Text.Regex.TDFA
 import Text.Read (readMaybe)
 import Data.List (intersect)
+--import Debug.Trace ( trace )
 
 data Configuration = Configuration {
-    axy :: (Int, Int),
-    bxy :: (Int, Int),
-    prizexy :: (Int, Int)
+    aXY :: (Int, Int),
+    bXY :: (Int, Int),
+    prizeXY :: (Int, Int)
 } deriving (Show)
 
 readA :: String -> (Int, Int)
@@ -68,7 +69,7 @@ extendedEuclidean a b =
                 then (r1, s1, t1)
                 else next (r1, s1, t1) (r, s0 - q * s1, t0 - q * t1)
         
--- Finds the solutions to the linear Diophantine equation using the Extended Euclidean Algorithm
+-- Finds the solutions to the linear Diophantine equation, ax + by = c, using the Extended Euclidean Algorithm
 --  
 --  1. Compute gcd(a, b) using Euclidean Algorithm; let g = gcd(a, b)
 --  2. If c % g ≠ 0:
@@ -99,8 +100,8 @@ solveLinearDiophantine a b c =
 
 findSolutions :: [Configuration] -> [[(Int, Int)]]
 findSolutions configurations =
-    let xs = map (\c -> solveLinearDiophantine (fst $ axy c) (fst $ bxy c) (fst $ prizexy c)) configurations
-        ys = map (\c -> solveLinearDiophantine (snd $ axy c) (snd $ bxy c) (snd $ prizexy c)) configurations
+    let xs = map (\c -> solveLinearDiophantine (fst $ aXY c) (fst $ bXY c) (fst $ prizeXY c)) configurations
+        ys = map (\c -> solveLinearDiophantine (snd $ aXY c) (snd $ bXY c) (snd $ prizeXY c)) configurations
     in zipWith intersect xs ys
 
 findLowestSolutionCost :: [(Int, Int)] -> Int
@@ -111,10 +112,34 @@ day13_part1 :: String -> IO [Int]
 day13_part1 input = do
     let configurations = loadConfigurations $ lines input
     let solutions = findSolutions configurations
-    let result = foldr (\c acc -> if null c then acc else findLowestSolutionCost c + acc) 0 solutions
-    return [result]
+    let cost = foldr (\c acc -> if null c then acc else findLowestSolutionCost c + acc) 0 solutions
+    return [cost]
+
+bumpPrizeLocation :: Configuration -> Configuration
+bumpPrizeLocation configuration =
+    configuration {
+        prizeXY = (fst (prizeXY configuration) + 10000000000000, snd (prizeXY configuration) + 10000000000000)
+    }
 
 -- Part 2
 day13_part2 :: String -> IO [Int]
 day13_part2 input = do
-    return []
+    let configurations = map bumpPrizeLocation $ loadConfigurations $ lines input
+--    print configurations
+    let solutions = map (\configuration ->
+            let x  = fst (aXY configuration)
+                x' = snd (aXY configuration)
+                y  = fst (bXY configuration)
+                y' = snd (bXY configuration)
+                c  = fst (prizeXY configuration)
+                c' = snd (prizeXY configuration)
+                d = x * y' - x' * y
+                y'cyc' = y' * c - y * c'
+                xc'x'c = x * c' - x' * c
+            in if d == 0 || y'cyc' `mod` d /= 0 || xc'x'c `mod` d /= 0
+                then Nothing
+                else Just (y'cyc' `div` d, xc'x'c `div` d)
+            ) configurations
+--    print solutions
+    let result = sum $ map (maybe 0 (\(a, b) -> a * 3 + b)) solutions
+    return [result]
