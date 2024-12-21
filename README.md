@@ -63,3 +63,6 @@ Implementing a virtual CPU was fun but tedious. Luckily the problem was designed
 
 ### Day 18
 Really trivial pathfinding. I don't know why they included this one *after* Day 16 which was a more complex pathfinding problem.
+
+### Day 19
+Implementing part 1 and part 2 were trivial. Haskell is designed for this kind of problem -- a recursive search. Unfortunately, part 2 is too slow to find a solution.
