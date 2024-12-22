@@ -56,13 +56,16 @@ Number theory is not my strength, but luckily I suspected that there is a known 
 Part 1 was pretty easy. I am getting more comfortable with Haskell's ways of doing iteration using recursion.
 
 ### Day 16
-Simple pathfinding with a twist. I ended up using someone else's A* library because implementing A* is always a non-trivial task and implementing it in Haskell would take a very long time. Unfortunately, that won't work for part 2 because I need to return *all possible* paths of with the shortest length. I'm starting to like Haskell less because the code is necessarily very complex and debugging is very cumbersome.
+Simple path-finding with a twist. I ended up using someone else's A* library because implementing A* is always a non-trivial task and implementing it in Haskell would take a very long time. Unfortunately, that won't work for part 2 because I need to return *all possible* paths of with the shortest length. I'm starting to like Haskell less because the code is necessarily very complex and debugging is very cumbersome.
 
 ### Day 17
 Implementing a virtual CPU was fun but tedious. Luckily the problem was designed in a way that Haskell could handle without too much trouble. Part 1 was relatively easy. Part 2 required a clever solution that I found after looking at the program being executed.
 
 ### Day 18
-Really trivial pathfinding. I don't know why they included this one *after* Day 16 which was a more complex pathfinding problem.
+Really trivial path-finding. I don't know why they included this one *after* Day 16 which was a more complex path-finding problem.
 
 ### Day 19
 Implementing part 1 and part 2 were trivial. Haskell is designed for this kind of problem -- a recursive search. Unfortunately, part 2 is too slow to find a solution.
+
+### Day 20
+Not much to say.
