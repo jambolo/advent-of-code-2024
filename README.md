@@ -75,3 +75,7 @@ Not much to say.
 
 ### Day 22
 Lots of stuff to track and manipulate, but otherwise not too difficult. However, part 2 is too slow to get a solution. I was hoping that analyzing the PRNG might give clues to some potential cleverness, there is nothing helpful there.
+
+### Day 23
+A relatively simple graph theory problem. One of the issues I have with learning Haskell is that the errors messages are concise, but they are not clear (due primarily to my inexperience). Thankfully, Copilot excels at explaining the cause of an error and suggesting a solution.
+

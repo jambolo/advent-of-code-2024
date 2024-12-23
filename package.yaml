@@ -65,6 +65,7 @@ library:
   - Day20
 
   - Day22
+  - Day23
 
 executables:
   AdventOfCode2024:
