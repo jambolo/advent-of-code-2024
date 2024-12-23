@@ -69,3 +69,9 @@ Implementing part 1 and part 2 were trivial. Haskell is designed for this kind o
 
 ### Day 20
 Not much to say.
+
+
+
+
+### Day 22
+Lots of stuff to track and manipulate, but otherwise not too difficult. However, part 2 is too slow to get a solution. I was hoping that analyzing the PRNG might give clues to some potential cleverness, there is nothing helpful there.

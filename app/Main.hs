@@ -24,6 +24,8 @@ import Day18 (day18_part1, day18_part2)
 import Day19 (day19_part1, day19_part2)
 import Day20 (day20_part1, day20_part2)
 
+import Day22 (day22_part1, day22_part2)
+
 type PuzzleInputToInt = String -> IO Int
 
 dayTable :: [(String, PuzzleInputToInt)]
@@ -67,9 +69,12 @@ dayTable = [
     ("day19_part1", day19_part1),
     ("day19_part2", day19_part2),
     ("day20_part1", day20_part1),
-    ("day20_part2", day20_part2)
+    ("day20_part2", day20_part2),
 
-    ]
+
+    ("day22_part1", day22_part1),
+    ("day22_part2", day22_part2)
+   ]
 
 timeIt :: IO a -> IO a
 timeIt action = do

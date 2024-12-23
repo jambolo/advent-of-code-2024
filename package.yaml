@@ -64,6 +64,8 @@ library:
   - Day19
   - Day20
 
+  - Day22
+
 executables:
   AdventOfCode2024:
     main:                Main.hs
