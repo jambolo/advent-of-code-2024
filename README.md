@@ -79,3 +79,5 @@ Lots of stuff to track and manipulate, but otherwise not too difficult. However,
 ### Day 23
 A relatively simple graph theory problem. One of the issues I have with learning Haskell is that the errors messages are concise, but they are not clear (due primarily to my inexperience). Thankfully, Copilot excels at explaining the cause of an error and suggesting a solution.
 
+### Day 24
+I "cheated" on part 1. The input is similar to Haskell and Haskell does lazy evaluation, so all I had to do was make some simple edits to the input, compile, and then run it.
