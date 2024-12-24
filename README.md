@@ -81,3 +81,6 @@ A relatively simple graph theory problem. One of the issues I have with learning
 
 ### Day 24
 I "cheated" on part 1. The input is similar to Haskell and Haskell does lazy evaluation, so all I had to do was make some simple edits to the input, compile, and then run it. I also "cheated" on part 2. I solved it by inspection. I know how an adder circuit is built, so I was able to figure out the purpose of each gate and then was able to identify which outputs were incorrect.
+
+### Day 25
+Trivial. I was hoping to get on the leaderboard, but I got tripped up by Haskell syntax. Anyway, there was no way I could finish in less than 5 minutes either way.
