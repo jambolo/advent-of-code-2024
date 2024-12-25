@@ -120,7 +120,7 @@ execute state0 program =
                         state' = instruction operand state
                     in exec state'
 -- Part 1
-day17_part1 :: String -> IO Int
+day17_part1 :: String -> IO [Int]
 day17_part1 input = do
     let (registerLines, programLines) = break null $ lines input
     let registers = Array.listArray (0, 2) $ map (\s -> read (s =~ "[0-9]+") :: Int) registerLines :: Registers
@@ -128,8 +128,9 @@ day17_part1 input = do
     let program = map (\s -> read s :: Int) $ splitOn "," $ dropWhile (not . isDigit) (head $ tail programLines) :: Program
 --    print program
     let result = execute (State registers 0 []) program
+    putStrLn ""
     print $ intercalate "," $ map show result
-    return 0
+    return result
 
 {-
 disassemble :: Program -> [String]
@@ -167,12 +168,12 @@ solve program =
                 in next i1 right' left'
     
 -- Part 2
-day17_part2 :: String -> IO Int
+day17_part2 :: String -> IO [Int]
 day17_part2 input = do
     let (_, programLines) = break null $ lines input
     let program = map (\s -> read s :: Int) $ splitOn "," $ dropWhile (not . isDigit) (head $ tail programLines) :: Program
-    print program
+--    print program
 --    let asm = disassemble program
 --    mapM_ putStrLn asm
     let result = solve program
-    return result
+    return [result]

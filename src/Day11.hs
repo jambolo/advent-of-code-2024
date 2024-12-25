@@ -38,13 +38,14 @@ blink stones =
                 right = read $ drop (length s `div` 2) s
 
 -- Part 1
-day11_part1 :: String -> IO Int
+day11_part1 :: String -> IO [Int]
 day11_part1 input = do
     let stones = loadStones input
 --    print stones
-    let result = foldr (\_ acc -> blink acc) stones [1..25]
---    print result
-    return $ length result
+    let final = foldr (\_ acc -> blink acc) stones ([1..25] :: [Int])
+--    print final
+    let result = length final
+    return [result]
 
 blink2 :: StoneMap -> StoneMap
 blink2 stones =
@@ -72,11 +73,11 @@ blink2 stones =
 
 
 -- Part 2
-day11_part2 :: String -> IO Int
+day11_part2 :: String -> IO [Int]
 day11_part2 input = do
     let stones = Map.fromListWith (+) $ zip (loadStones input) (repeat 1)
 --    print stones
-    let result = foldr (\_ acc -> blink2 acc) stones [1..75]
+    let groups = foldr (\_ acc -> blink2 acc) stones ([1..75] :: [Int])
 --    print result
-    let numberOfStones = Map.foldr (+) 0 result
-    return numberOfStones
+    let result = Map.foldr (+) 0 groups
+    return [result]

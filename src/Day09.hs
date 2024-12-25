@@ -40,12 +40,13 @@ defrag sectors =
 checksum :: [Int] -> Int
 checksum = sum . filter (>= 0) . zipWith (\i x -> if x >= 0 then i * x else x) [0..]
 
-day09_part1 :: String -> IO Int
+day09_part1 :: String -> IO [Int]
 day09_part1 input = do
     let digits = parseDigits input
     let sectors = buildSectorList digits
     let defragged = defrag sectors
-    return $ checksum defragged
+    let result = checksum defragged
+    return [result]
 
 data Bucket = Bucket {
     size :: Int,
@@ -106,13 +107,14 @@ checksum2 buckets =
             in (i + size', value' * sumOfIndexes + acc)
         ) (0, 0) buckets
 
-day09_part2 :: String -> IO Int
+day09_part2 :: String -> IO [Int]
 day09_part2 input = do
     let digits = parseDigits input
     let buckets = buildBucketList digits
-    print $ length buckets
+--    print $ length buckets
 --    printBuckets buckets
     let defragged = defrag2 buckets
-    print $ length defragged
+--    print $ length defragged
 --    printBuckets defragged
-    return $ checksum2 defragged
+    let result = checksum2 defragged
+    return [result]

@@ -17,14 +17,14 @@ rng x =
     in y2
 
 -- Part 1
-day22_part1 :: String -> IO Int
+day22_part1 :: String -> IO [Int]
 day22_part1 input = do
     let s0 = map read (lines input) :: [Int]
 --    print s0
     let s2000 = map (\s -> iterate rng s !! 2000) s0
 --    print $ zip s0 s2000
     let result = sum s2000
-    return result
+    return [result]
 
 -- Number of possible sequences
 nSeq :: Int
@@ -67,23 +67,6 @@ rowSum :: PricesBySeqAndMonkey -> Int -> Int
 rowSum array r = sum [array Array.! (r, c) | c <- [0..snd (snd (Array.bounds array))]]
 
 -- Part 2
-day22_part2 :: String -> IO Int
+day22_part2 :: String -> IO [Int]
 day22_part2 input = do
-    let s0 = map read (lines input) :: [Int]
---    print s0
-    let s2000 = map (take nNumbers . iterate rng) s0 -- for each monkey
---    print s2000
-    let prices = map (map (`mod` 10)) s2000 -- 0 - 2000 for each monkey
---    print prices
-    let differences = map (\p -> zipWith (-) (tail p) p) prices -- 1 - 2000 for each monkey
---    print differences
-    let pricesBySeqAndMonkey = buildPricesBySeqAndMonkey differences prices -- prices for 0 - nMonkeys-1 for 0 - 19^4-1 sequences
---    print pricesBySeqAndMonkey
---    let nonZeroElements = map (\((i, m), p) -> ((convertIndexToSequence i, m), p)) $ filter (\((_, _), v) -> v /= 0) (Array.assocs pricesBySeqAndMonkey)
---    print nonZeroElements
-    let result = foldr (\i acc ->
-                    let s = rowSum pricesBySeqAndMonkey i
-                    in if s > snd acc then (i, s) else acc
-                    ) (0, 0) [0..nSeq - 1]
---    print $ convertIndexToSequence $ fst result
-    return $ snd result
+    return []

@@ -11,12 +11,13 @@ type Array2OfInts = Array.Array (Int, Int) Int
 type LocationSet = Set.Set (Int, Int)
 
 -- Create the map from the input lines
-createMap :: [[Char]] -> Array2OfInts
-createMap a =
-    let nRows = length a
-        nCols = length (head a)
-        bounds = ((0, 0), (nRows - 1, nCols - 1))
-        elements = [((i, j), digitToInt (a !! i !! j)) | i <- [0 .. nRows - 1], j <- [0 .. nCols - 1]]
+createMap :: String -> Array2OfInts
+createMap input =
+    let a = lines input
+        bottom = length a - 1
+        right = length (head a) - 1
+        bounds = ((0, 0), (bottom, right))
+        elements = [((i, j), digitToInt (a !! i !! j)) | i <- [0 .. bottom], j <- [0 .. right]]
     in Array.array bounds elements
 {-
 -- Print the map
@@ -59,15 +60,16 @@ scoreTrailheads :: Array2OfInts -> [(Int, Int)] -> [Int]
 scoreTrailheads area = map (scoreTrailhead area)
 
 -- Part 1
-day10_part1 :: String -> IO Int
+day10_part1 :: String -> IO [Int]
 day10_part1 input = do
-    let area = createMap (lines input)
+    let area = createMap input
 --    printMap area
     let trailheads = findTrailheads area
 --    print trailheads
     let scores = scoreTrailheads area trailheads
 --    print scores
-    return $ sum scores
+    let result = sum scores
+    return [result]
 
 -- Returns the rating for a trailhead
 rateTrailhead :: Array2OfInts -> (Int, Int) -> Int
@@ -95,12 +97,13 @@ rateTrailheads :: Array2OfInts -> [(Int, Int)] -> [Int]
 rateTrailheads area = map $ rateTrailhead area
 
 -- Part 2
-day10_part2 :: String -> IO Int
+day10_part2 :: String -> IO [Int]
 day10_part2 input = do
-    let area = createMap (lines input)
+    let area = createMap input
 --    printMap area
     let trailheads = findTrailheads area
 --    print trailheads
     let ratings = rateTrailheads area trailheads
 --    print ratings
-    return $ sum ratings
+    let result = sum ratings
+    return [result]

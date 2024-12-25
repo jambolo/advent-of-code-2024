@@ -28,6 +28,8 @@ dependencies:
 - time
 - astar
 - unordered-containers
+- HUnit
+- directory
 
 ghc-options:
 - -Wall
@@ -82,7 +84,7 @@ executables:
 
 tests:
   AdventOfCode2024-test:
-    main:                Spec.hs
+    main:                Main.hs
     source-dirs:         test
     ghc-options:
     - -threaded

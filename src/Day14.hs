@@ -69,7 +69,7 @@ safetyFactor (q1, q2, q3, q4) = q1 * q2 * q3 * q4
 
 
 -- Part 1
-day14_part1 :: String -> IO Int
+day14_part1 :: String -> IO [Int]
 day14_part1 input = do
     let robots = loadRobots (lines input)
 --    print robots
@@ -79,9 +79,10 @@ day14_part1 input = do
 --    printMap movedRobots
     let c = census movedRobots
 --    print c
-    return $ safetyFactor c
+    let result = safetyFactor c
+    return [result]
 
 -- Part 2
-day14_part2 :: String -> IO Int
+day14_part2 :: String -> IO [Int]
 day14_part2 input = do
-    return 0
+    return []

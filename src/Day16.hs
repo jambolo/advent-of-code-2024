@@ -13,17 +13,18 @@ type Point = (Int, Int, Int)
 type PointSet = HashSet.HashSet Point
 type Neighborhood = Array.Array (Int, Int, Int) PointSet
 
-createMap :: [[Char]] -> Array2OfChar
-createMap a =
-    let nRows = length a
-        nCols = length (head a)
-        bounds = ((0, 0), (nRows - 1, nCols - 1))
-        elements = [((i, j), a !! i !! j) | i <- [0 .. nRows - 1], j <- [0 .. nCols - 1]]
+createMap :: String -> Array2OfChar
+createMap input =
+    let a = lines input
+        bottom = length a - 1
+        right = length (head a) - 1
+        bounds = ((0, 0), (bottom, right))
+        elements = [((i, j), a !! i !! j) | i <- [0 .. bottom], j <- [0 .. right]]
     in Array.array bounds elements
 
 -- Neighbors function: adjacent cells in a grid
-neighbors :: Neighborhood -> Point -> PointSet
-neighbors neighborhood p = neighborhood Array.! p
+neighborsOf :: Neighborhood -> Point -> PointSet
+neighborsOf neighborhood p = neighborhood Array.! p
 
 -- Turn cost function: cost of turning from direction d1 to direction d2
 --    | 0 | 1 | 2 | 3
@@ -56,31 +57,36 @@ heuristic (i1, j1, _) (i2, j2, _) =
 -- Goal predicate: have we reached the goal?
 goal :: Point -> Point -> Bool
 goal goalNode p =
-    let (gi, gj, _) = goalNode
-        (pi, pj, _) = p
-    in gi == pi && gj == pj
-
+    let (g_i, g_j, _) = goalNode
+        (p_i, p_j, _) = p
+    in g_i == p_i && g_j == p_j
+{-
 -- Valid cell predicate: is the cell a valid one?
 validCell :: Array2OfChar -> (Int, Int) -> Bool
 validCell area p =
     Array.inRange (Array.bounds area) p && area Array.! p /= '#'
+-}
+-- Adds neighbors of the given point to the neighborhood
+addNeighbors :: Point -> Neighborhood -> Neighborhood
+addNeighbors (i, j, d) neighborhood =
+    let adjacent = [(i, j + 1), (i - 1, j), (i, j - 1), (i + 1, j)]
+        neighbors = [(i', j', d') | (i', j') <- adjacent, d' <- [0..3], abs d - d' /= 2]
+    in neighborhood Array.// [((i, j, d), HashSet.fromList neighbors)]
 
--- Build the list of valid neighbors for each point in the grid
+-- Builds the list of valid neighbors for each point in the grid
 buildNeighborhood :: Array2OfChar -> Neighborhood
 buildNeighborhood area =
-    let ((top, left), (bottom, right)) = Array.bounds area
-        neighborhood = Array.array ((top, left, 0), (bottom, right, 3)) [((i, j, d), HashSet.empty) | i <- [top .. bottom], j <- [left .. right], d <- [0..3]]
-        addNeighbors :: Point -> Neighborhood -> Neighborhood
-        addNeighbors (i, j, d) neighborhood' =
-            let neighbors' = [(i', j', d') | (i', j') <- [(i, j + 1), (i - 1, j), (i, j - 1), (i + 1, j)], d' <- [0..3], abs d - d' /= 2]
-            in neighborhood' Array.// [((i, j, d), HashSet.fromList neighbors')]
-        allPoints = [(i, j, d) | i <- [top .. bottom], j <- [left .. right], area Array.! (i, j) /= '#', d <- [0..3]]
-    in foldr addNeighbors neighborhood allPoints
+    let ((_, _), (bottom, right)) = Array.bounds area
+        bounds = ((0, 0, 0), (bottom, right, 3))
+        elements = [((i, j, d), HashSet.empty) | i <- [0 .. bottom], j <- [0 .. right], d <- [0..3]]
+        neighborhood = Array.array bounds elements
+        allAccessible = [(i, j, d) | i <- [0 .. bottom], j <- [0 .. right], area Array.! (i, j) /= '#', d <- [0..3]]
+    in foldr addNeighbors neighborhood allAccessible
 
 -- Part 1
-day16_part1 :: String -> IO Int
+day16_part1 :: String -> IO [Int]
 day16_part1 input = do
-    let area = createMap (lines input)
+    let area = createMap input
 --    print $ Array.bounds area
     let ((top, left), (bottom, right)) = Array.bounds area
     let start = (bottom - 1, left + 1, 0 :: Int)
@@ -88,15 +94,15 @@ day16_part1 input = do
 --    print (start, end)
     let neighborhood = buildNeighborhood area
 --    print neighborhood
-    let path = aStar (neighbors neighborhood) cost (heuristic end) (goal end) start
+    let path = aStar (neighborsOf neighborhood) cost (heuristic end) (goal end) start
     case path of
         Just p  -> do
 --            putStrLn $ "Path found: " ++ show p
             let totalCost = cost start (head p) + foldl (\acc (p1, p2) -> acc + cost p1 p2) 0 (zip p (tail p))
-            return totalCost
+            return [totalCost]
         Nothing -> error "No path found!"
 
 -- Part 2
-day16_part2 :: String -> IO Int
+day16_part2 :: String -> IO [Int]
 day16_part2 input = do
-    return 0
+    return []

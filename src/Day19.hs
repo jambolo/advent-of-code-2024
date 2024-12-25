@@ -31,14 +31,14 @@ possible patterns design =
         ) patterns
 
 -- Part 1
-day19_part1 :: String -> IO Int
+day19_part1 :: String -> IO [Int]
 day19_part1 input = do
     let (patterns, designs) = loadData input
 --    print patterns
 --    print designs
 
     let result = length $ filter id $ map (possible patterns) designs
-    return result
+    return [result]
 
 countPossible :: [String] -> String -> Int
 countPossible patterns =
@@ -54,11 +54,6 @@ countPossible patterns =
                 ) 0 patterns
 
 -- Part 2
-day19_part2 :: String -> IO Int
+day19_part2 :: String -> IO [Int]
 day19_part2 input = do
-    let (patterns, designs) = loadData input
---    print patterns
---    print designs
-
-    let result = sum $ map (countPossible patterns) designs
-    return result
+    return []

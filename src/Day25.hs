@@ -21,14 +21,14 @@ fits :: [Int] -> [Int] -> Bool
 fits key lock = 
     all (\(k, l) -> k + l <= 5) $ zip key lock
 
-day25_part1 :: String -> IO Int
+day25_part1 :: String -> IO [Int]
 day25_part1 input = do
     let (keys, locks) = loadSchematics input
 --    print (keys, locks)
     let result = length [() | key <- keys, lock <- locks, fits key lock]
-    return result
+    return [result]
 
 -- Part 2
-day25_part2 :: String -> IO Int
+day25_part2 :: String -> IO [Int]
 day25_part2 _ = do
-    return 0
+    return []

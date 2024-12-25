@@ -107,14 +107,14 @@ findLowestSolutionCost :: [(Int, Int)] -> Int
 findLowestSolutionCost solution = minimum $ map (\(a, b) -> a * 3 + b) solution
 
 -- Part 1
-day13_part1 :: String -> IO Int
+day13_part1 :: String -> IO [Int]
 day13_part1 input = do
     let configurations = loadConfigurations $ lines input
     let solutions = findSolutions configurations
-    let cost = foldr (\c acc -> if null c then acc else findLowestSolutionCost c + acc) 0 solutions
-    return cost
+    let result = foldr (\c acc -> if null c then acc else findLowestSolutionCost c + acc) 0 solutions
+    return [result]
 
 -- Part 2
-day13_part2 :: String -> IO Int
+day13_part2 :: String -> IO [Int]
 day13_part2 input = do
-    return 0
+    return []

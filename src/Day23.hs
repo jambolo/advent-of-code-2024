@@ -55,7 +55,7 @@ countCyclesWithANodeStartingWithT cycles =
 
 -- Part 1
 
-day23_part1 :: String -> IO Int
+day23_part1 :: String -> IO [Int]
 day23_part1 input = do
     let edges = map (\e -> (
                 case  splitOn "-" e of
@@ -69,9 +69,9 @@ day23_part1 input = do
     let cycles = dedupCycles $ findCycles nodes edges
 --    print (length cycles, cycles)
     let result = countCyclesWithANodeStartingWithT cycles
-    return result
+    return [result]
 
 -- Part 2
-day23_part2 :: String -> IO Int
+day23_part2 :: String -> IO [Int]
 day23_part2 input = do
-    return 0
+    return []

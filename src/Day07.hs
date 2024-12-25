@@ -14,12 +14,11 @@ parseLines = map parseLine
             _ -> error "Invalid input"
 
 testComputation :: (Int, [Int]) -> Bool
-testComputation (result, operands) =
-    next (tail operands) (head operands)
+testComputation (result, operands) = go (tail operands) (head operands)
     where
-        next :: [Int] -> Int -> Bool
-        next [] acc = acc == result
-        next (x:xs) acc = acc <= result && (next xs (acc + x) || next xs (acc * x))
+        go :: [Int] -> Int -> Bool
+        go [] acc = acc == result
+        go (x:xs) acc = acc <= result && any (go xs) [acc + x, acc * x]
 
 nextPowerOf10 :: Int -> Int
 nextPowerOf10 n = head [10^x | x <- [1..] :: [Int], 10^x > n]
@@ -30,25 +29,23 @@ concatenate a b = a * nextPowerOf10 b + b
 
 testComputation2 :: (Int, [Int]) -> Bool
 testComputation2 (_, []) = False
-testComputation2 (result, operands) =
-    next (tail operands) (head operands)
+testComputation2 (result, operands) = go (tail operands) (head operands)
     where
-        next :: [Int] -> Int -> Bool
-        next [] acc = acc == result
-        next (x:xs) acc = acc <= result &&
-                    (next xs (acc + x) ||
-                    next xs (acc * x) ||
-                    next xs (concatenate acc x))
+        go :: [Int] -> Int -> Bool
+        go [] acc = acc == result
+        go (x:xs) acc = acc <= result && any (go xs) [acc + x, acc * x, concatenate acc x]
 
 
-day07_part1 :: String -> IO Int
+day07_part1 :: String -> IO [Int]
 day07_part1 input = do
     let equations = parseLines $ lines input
-    let validEquations = filter testComputation equations
-    return $ sum $ map fst validEquations
+    let validEquations = map fst (filter testComputation equations)
+    let result = sum validEquations
+    return [result]
 
-day07_part2 :: String -> IO Int
+day07_part2 :: String -> IO [Int]
 day07_part2 input = do
     let equations = parseLines $ lines input
-    let validEquations = filter testComputation2 equations
-    return $ sum $ map fst validEquations
+    let validEquations = map fst (filter testComputation2 equations)
+    let result = sum validEquations
+    return [result]

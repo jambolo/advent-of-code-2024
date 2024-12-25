@@ -7,12 +7,12 @@ import qualified Data.Array as Array
 
 type Array2OfChar = Array.Array (Int, Int) Char
 
-createMap :: [[Char]] -> Array2OfChar
-createMap a =
-    let nRows = length a
-        nCols = length (head a)
-        bounds = ((0, 0), (nRows - 1, nCols - 1))
-        elements = [((i, j), a !! i !! j) | i <- [0 .. nRows - 1], j <- [0 .. nCols - 1]]
+createMap :: [String] -> Array2OfChar
+createMap mapLines =
+    let bottom = length mapLines - 1
+        right = length (head mapLines) - 1
+        bounds = ((0, 0), (bottom, right))
+        elements = [((i, j), mapLines !! i !! j) | i <- [0 .. bottom], j <- [0 .. right]]
     in Array.array bounds elements
 
 --printMap :: Array2OfChar -> IO ()
@@ -72,7 +72,7 @@ coordinateSum area =
     in sum [i * 100 + j | i <- [top..bottom], j <- [left..right], area Array.! (i, j) == 'O']
 
 -- Part 1
-day15_part1 :: String -> IO Int
+day15_part1 :: String -> IO [Int]
 day15_part1 input = do
     let (mapLines, stepLines) = break null (lines input)
     let area = createMap mapLines
@@ -83,9 +83,10 @@ day15_part1 input = do
 --    print start
     let area' = executeSteps area start steps
 --    printMap area'
-    return $ coordinateSum area'
+    let result = coordinateSum area'
+    return [result]
 
 -- Part 2
-day15_part2 :: String -> IO Int
+day15_part2 :: String -> IO [Int]
 day15_part2 input = do
-    return 0
+    return []

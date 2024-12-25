@@ -11,13 +11,14 @@ type Array2OfInt = Array.Array (Int, Int) Int
 
 createMap :: String -> Array2OfChar
 createMap input =
-    let chars = lines input
-        nRows = length chars
-        nCols = length (head chars)
-        bounds = ((0, 0), (nRows - 1, nCols - 1))
-        elements = [((i, j), chars !! i !! j) | i <- [0 .. nRows - 1], j <- [0 .. nCols - 1]]
+    let a = lines input
+        bottom = length a - 1
+        right = length (head a) - 1
+        bounds = ((0, 0), (bottom, right))
+        elements = [((i, j), a !! i !! j) | i <- [0 .. bottom], j <- [0 .. right]]
     in Array.array bounds elements
 
+{-
 printArray2OfChar :: Array2OfChar -> IO ()
 printArray2OfChar area = do
     let ((top, left), (bottom, right)) = Array.bounds area
@@ -36,6 +37,7 @@ printArray2OfInt distances = do
         putChar '\n'
         ) [top..bottom]
 
+-}
 fillArray :: ((Int, Int), (Int, Int)) -> Int -> Array2OfInt
 fillArray bounds value =
     let ((top, left), (bottom, right)) = bounds
@@ -85,7 +87,7 @@ findShortcuts distances minShortcut time =
         ) [] [p | p <- Array.indices distances, distances Array.! p >= 0]
 
 -- Part 1
-day20_part1 :: String -> IO Int
+day20_part1 :: String -> IO [Int]
 day20_part1 input = do
     let area = createMap input
 --    printArray2OfChar area
@@ -98,10 +100,11 @@ day20_part1 input = do
 --    printArray2OfInt distances
     let shortcuts = findShortcuts distances 100 2
 --    print shortcuts
-    return $ length shortcuts
+    let result = length shortcuts
+    return [result]
 
 -- Part 2
-day20_part2 :: String -> IO Int
+day20_part2 :: String -> IO [Int]
 day20_part2 input = do
     let area = createMap input
 --    printArray2OfChar area
@@ -114,4 +117,5 @@ day20_part2 input = do
 --    printArray2OfInt distances
     let shortcuts = findShortcuts distances 100 20
 --    print shortcuts
-    return $ length shortcuts
+    let result = length shortcuts
+    return [result]

@@ -1,8 +1,8 @@
 module Main (main) where
     
 import Data.Time.Clock (getCurrentTime, diffUTCTime)
-
 import System.Environment (getArgs)
+
 import Day01 (day01_part1, day01_part2)
 import Day02 (day02_part1, day02_part2)
 import Day03 (day03_part1, day03_part2)
@@ -29,9 +29,9 @@ import Day23 (day23_part1, day23_part2)
 import Day24 (day24_part1, day24_part2)
 import Day25 (day25_part1, day25_part2)
 
-type PuzzleInputToInt = String -> IO Int
+type PuzzleInputToIntList = String -> IO [Int]
 
-dayTable :: [(String, PuzzleInputToInt)]
+dayTable :: [(String, PuzzleInputToIntList)]
 dayTable = [
     ("day01_part1", day01_part1),
     ("day01_part2", day01_part2),
