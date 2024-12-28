@@ -23,7 +23,7 @@ import Day17 (day17_part1, day17_part2)
 import Day18 (day18_part1, day18_part2)
 import Day19 (day19_part1, day19_part2)
 import Day20 (day20_part1, day20_part2)
-
+import Day21 (day21_part1, day21_part2)
 import Day22 (day22_part1, day22_part2)
 import Day23 (day23_part1, day23_part2)
 import Day24 (day24_part1, day24_part2)
@@ -73,8 +73,8 @@ dayTable = [
     ("day19_part2", day19_part2),
     ("day20_part1", day20_part1),
     ("day20_part2", day20_part2),
-
-
+    ("day21_part1", day21_part1),
+    ("day21_part2", day21_part2),
     ("day22_part1", day22_part1),
     ("day22_part2", day22_part2),
     ("day23_part1", day23_part1),
@@ -101,9 +101,9 @@ main = do
             putStrLn $ "Day " ++ day ++ ", input: " ++ inputName
             input <- readFile inputName
             case lookup day dayTable of
-                Nothing -> error $ "Unknown day: " ++ day
                 Just solution -> do
                     timeIt $ do
                         result <- solution input
                         putStrLn $ day ++ " solution: " ++ show result
+                Nothing -> error $ "Unknown day: " ++ day
         _ -> error "Usage: AdventOfCode2024 <day> <input file name>"

@@ -70,7 +70,7 @@ Implementing part 1 and part 2 were trivial. Haskell is designed for this kind o
 ### Day 20
 Not much to say.
 
-
+### Day 21
 
 
 ### Day 22
