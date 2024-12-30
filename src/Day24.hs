@@ -9,6 +9,7 @@ import Data.Bits ( ( .&. ), ( .|. ), xor )
 compose :: [Int] -> Int
 compose = foldr (\z acc -> acc * 2 + z) 0
 
+{-
 part1_example_1_execute :: Int
 part1_example_1_execute =
     let x00 = 1
@@ -22,7 +23,9 @@ part1_example_1_execute =
         z01 = x01 `xor` y01
         z02 = x02  .|.  y02
     in compose [z00, z01, z02]
+-}
 
+{-
 part1_example_2_execute :: Int
 part1_example_2_execute = 
     let x00 = 1
@@ -73,6 +76,7 @@ part1_example_2_execute =
         z12 = tgd `xor` rvg
         gnj = tnw  .|.  pbm
     in compose [z00, z01, z02, z03, z04, z05, z06, z07, z08, z09, z10, z11, z12]
+-}
 
 part1_execute :: Int
 part1_execute =

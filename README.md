@@ -53,7 +53,7 @@ Number theory is not my strength, but luckily I suspected that there is a known 
 The key to many of these problems is the mod operator. For part 2, I computed a weighted sum of the robot locations and I saved the count every time the sum was greater than the previous maximum. The best map shows a tree in the center of the map.
 
 ### Day 15
-Part 1 was pretty easy. I am getting more comfortable with Haskell's ways of doing iteration using recursion.
+Part 1 was pretty easy. I am getting more comfortable with Haskell's ways of doing iteration using recursion. Part 2 was a bogged down by the need to keep track of so many details. Haskell isn't suited well for algorithms with an intricate state.
 
 ### Day 16
 Simple path-finding with a twist. I ended up using someone else's A* library because implementing A* is always a non-trivial task and implementing it in Haskell would take a very long time. Unfortunately, that won't work for part 2 because I need to return *all possible* paths of with the shortest length. I'm starting to like Haskell less because the code is necessarily very complex and debugging is very cumbersome.
