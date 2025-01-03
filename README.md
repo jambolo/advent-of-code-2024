@@ -44,7 +44,7 @@ Pretty easy again. I think Haskell is suited for this kind of recursive problem.
 Part 2 has a clever solution. 
 
 ### Day 12
-Pretty easy, though some minor errors were hard to find.
+Part 1 was easy -- just do a simple flood fill and count all adjacent cells not in the region. Part 2 was not obvious to me, but  eventually it dawned on me that sorting the edges would make aggregating them simple. Unfortunately, the sample code and output that ChatGPT generated for me for the `groupBy` function was wrong and it took a while to figure out why my solution wasn't working. The complexity of Haskell and the difficulty in debugging were also a hindrance.
 
 ### Day 13
 Number theory is not my strength, but luckily I suspected that there is a known solution to this kind of problem and it turns out that there is. Unfortunately, it is not fast enough for part 2. It turns out that solving a linear Diophantine equation was the wrong approach, and the simple (and obvious to many but not me) solution was to solve the system of linear equations and accepting only integer solutions.
@@ -71,7 +71,6 @@ Implementing part 1 and part 2 were trivial. Haskell is designed for this kind o
 Not much to say.
 
 ### Day 21
-Part 1 was easy -- just do a simple flood fill and count all adjacent cells not in the region. Part 2 was not obvious to me, but  eventually it dawned on me that sorting the edges would make aggregating them simple. Unfortunately, the sample code and output that ChatGPT generated for me for the `groupBy` function was wrong and it took a while to figure out why my solution wasn't working. The complexity of Haskell and the difficulty in debugging were also a hindrance.
 
 ### Day 22
 Lots of stuff to track and manipulate, but otherwise not too difficult. However, part 2 is too slow to get a solution. I was hoping that analyzing the PRNG might give clues to some potential cleverness, there is nothing helpful there.
