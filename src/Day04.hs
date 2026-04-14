@@ -5,6 +5,8 @@ module Day04 (
 
 import qualified Data.Array as Array
 
+import Answer (Answer(..))
+
 type Array2OfChar = Array.Array (Int, Int) Char
 type Rect = ((Int, Int), (Int, Int))
 
@@ -12,7 +14,9 @@ createPuzzle :: String -> Array2OfChar
 createPuzzle input =
     let a = lines input
         bottom = length a - 1
-        right = length (head a) - 1
+        right = case a of
+            (row:_) -> length row - 1
+            []      -> error "Input has no rows"
         bounds = ((0, 0), (bottom, right))
         elements = [((i, j), a !! i !! j) | i <- [0 .. bottom], j <- [0 .. right]]
     in Array.array bounds elements
@@ -30,7 +34,7 @@ findMatches puzzle d ((top, left), (bottom, right)) = [checkXmas puzzle (i, j) d
 countMatches :: Array2OfChar -> (Int, Int) -> Rect -> Int
 countMatches puzzle d bounds = length . filter id $ findMatches puzzle d bounds
 
-day04_part1 :: String -> IO [Int]
+day04_part1 :: String -> IO Answer
 day04_part1 input = do
     let puzzle = createPuzzle input
     let ((top, left), (bottom, right)) = Array.bounds puzzle
@@ -42,7 +46,7 @@ day04_part1 input = do
                 countMatches puzzle ( 1, -1) ((top    , left + 3), (bottom - 3, right    )) +
                 countMatches puzzle ( 1,  0) ((top    , left    ), (bottom - 3, right    )) +
                 countMatches puzzle ( 1,  1) ((top    , left    ), (bottom - 3, right - 3))
-    return [total]
+    return (Ints [total])
 
 checkX :: Array2OfChar -> (Int, Int) -> Bool
 checkX puzzle (i, j) = puzzle Array.! (i + 0, j + 0) == 'A' &&
@@ -54,9 +58,9 @@ checkX puzzle (i, j) = puzzle Array.! (i + 0, j + 0) == 'A' &&
 findXs :: Array2OfChar -> Rect -> [Bool]
 findXs puzzle ((top, left), (bottom, right)) = [checkX puzzle (i, j) | i <- [top .. bottom], j <- [left .. right]]
 
-day04_part2 :: String -> IO [Int]
+day04_part2 :: String -> IO Answer
 day04_part2 input = do
     let puzzle = createPuzzle input
     let ((top, left), (bottom, right)) = Array.bounds puzzle
     let total = length . filter id $ findXs puzzle ((top + 1, left + 1), (bottom - 1, right - 1))
-    return [total]
+    return (Ints [total])

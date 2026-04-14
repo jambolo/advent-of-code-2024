@@ -8,6 +8,8 @@ import Text.Read (readMaybe)
 import Data.List (intersect)
 --import Debug.Trace ( trace )
 
+import Answer (Answer(..))
+
 data Configuration = Configuration {
     aXY :: (Int, Int),
     bXY :: (Int, Int),
@@ -68,9 +70,9 @@ extendedEuclidean a b =
             in if r == 0
                 then (r1, s1, t1)
                 else next (r1, s1, t1) (r, s0 - q * s1, t0 - q * t1)
-        
+
 -- Finds the solutions to the linear Diophantine equation, ax + by = c, using the Extended Euclidean Algorithm
---  
+--
 --  1. Compute gcd(a, b) using Euclidean Algorithm; let g = gcd(a, b)
 --  2. If c % g ≠ 0:
 --         Return empty list since no solution exists
@@ -108,12 +110,12 @@ findLowestSolutionCost :: [(Int, Int)] -> Int
 findLowestSolutionCost solution = minimum $ map (\(a, b) -> a * 3 + b) solution
 
 -- Part 1
-day13_part1 :: String -> IO [Int]
+day13_part1 :: String -> IO Answer
 day13_part1 input = do
     let configurations = loadConfigurations $ lines input
     let solutions = findSolutions configurations
     let cost = foldr (\c acc -> if null c then acc else findLowestSolutionCost c + acc) 0 solutions
-    return [cost]
+    return (Ints [cost])
 
 bumpPrizeLocation :: Configuration -> Configuration
 bumpPrizeLocation configuration =
@@ -122,7 +124,7 @@ bumpPrizeLocation configuration =
     }
 
 -- Part 2
-day13_part2 :: String -> IO [Int]
+day13_part2 :: String -> IO Answer
 day13_part2 input = do
     let configurations = map bumpPrizeLocation $ loadConfigurations $ lines input
 --    print configurations
@@ -142,4 +144,4 @@ day13_part2 input = do
             ) configurations
 --    print solutions
     let result = sum $ map (maybe 0 (\(a, b) -> a * 3 + b)) solutions
-    return [result]
+    return (Ints [result])

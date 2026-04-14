@@ -9,6 +9,8 @@ import Data.Graph.AStar ( aStar )
 import Data.List.Split ( splitOn )
 --import Debug.Trace
 
+import Answer (Answer(..))
+
 type Array2OfChar = Array.Array (Int, Int) Char
 type Point = (Int, Int)
 type PointSet = HashSet.HashSet Point
@@ -69,7 +71,7 @@ neighbors area (x, y) =
     HashSet.fromList [p | p <- [(x, y - 1), (x, y + 1), (x - 1, y), (x + 1, y)], validCell area p]
 
 -- Part 1
-day18_part1 :: String -> IO [Int]
+day18_part1 :: String -> IO Answer
 day18_part1 input = do
     let coords = take time $ map parseLine $ lines input
 --    print coords
@@ -80,7 +82,7 @@ day18_part1 input = do
     let totalCost = case path of
             Just p  -> length p
             Nothing -> error "No path found!"
-    return [totalCost]
+    return (Ints [totalCost])
 
 findFirstBlockage :: Array2OfChar -> [(Int, Int)] -> Point
 findFirstBlockage _ [] = (0, 0)
@@ -92,7 +94,7 @@ findFirstBlockage area (c:coords') =
             Nothing -> c
 
 -- Part 2
-day18_part2 :: String -> IO [Int]
+day18_part2 :: String -> IO Answer
 day18_part2 input = do
     let coords = map parseLine $ lines input
 --    print coords
@@ -100,4 +102,4 @@ day18_part2 input = do
 --    printMap area
 --    print path
     let (x, y) = findFirstBlockage area coords
-    return [x, y]
+    return (Str (show x ++ "," ++ show y))

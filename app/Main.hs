@@ -1,8 +1,9 @@
 module Main (main) where
-    
+
 import Data.Time.Clock (getCurrentTime, diffUTCTime)
 import System.Environment (getArgs)
 
+import Answer (Answer(..))
 import Day01 (day01_part1, day01_part2)
 import Day02 (day02_part1, day02_part2)
 import Day03 (day03_part1, day03_part2)
@@ -29,9 +30,9 @@ import Day23 (day23_part1, day23_part2)
 import Day24 (day24_part1, day24_part2)
 import Day25 (day25_part1, day25_part2)
 
-type PuzzleInputToIntList = String -> IO [Int]
+type Solution = String -> IO Answer
 
-dayTable :: [(String, PuzzleInputToIntList)]
+dayTable :: [(String, Solution)]
 dayTable = [
     ("day01_part1", day01_part1),
     ("day01_part2", day01_part2),
@@ -85,6 +86,16 @@ dayTable = [
     ("day25_part2", day25_part2)
    ]
 
+formatBanner :: String -> String
+formatBanner day =
+  let parts = words $ map (\c -> if c == '_' then ' ' else c) day
+  in case parts of
+      [dayPart, partPart] ->
+        let dayNum = drop 3 dayPart
+            partNum = drop 4 partPart
+        in "=== Day " ++ dayNum ++ ", part " ++ partNum ++ " ==="
+      _ -> day
+
 timeIt :: IO a -> IO a
 timeIt action = do
   start <- getCurrentTime
@@ -98,12 +109,12 @@ main = do
     args <- getArgs
     case args of
         [day, inputName] -> do
-            putStrLn $ "Day " ++ day ++ ", input: " ++ inputName
+            putStrLn $ formatBanner day
             input <- readFile inputName
             case lookup day dayTable of
                 Just solution -> do
                     timeIt $ do
                         result <- solution input
-                        putStrLn $ day ++ " solution: " ++ show result
+                        putStrLn $ "Answer: " ++ show result
                 Nothing -> error $ "Unknown day: " ++ day
         _ -> error "Usage: AdventOfCode2024 <day> <input file name>"

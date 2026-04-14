@@ -5,6 +5,8 @@ module Day11 (
 
 import qualified Data.Map as Map
 
+import Answer (Answer(..))
+
 type StoneMap = Map.Map Int Int
 
 loadStones :: String -> [Int]
@@ -19,7 +21,7 @@ blink stones =
     next stones []
     where
         next [] acc = reverse acc
-        {-       
+        {-
             1. If the stone is engraved with the number 0, it is replaced by a stone engraved with the number 1.
             2. If the stone is engraved with a number that has an even number of digits, it is replaced by two stones.
                 The left half of the digits are engraved on the new left stone, and the right half of the digits are
@@ -38,14 +40,14 @@ blink stones =
                 right = read $ drop (length s `div` 2) s
 
 -- Part 1
-day11_part1 :: String -> IO [Int]
+day11_part1 :: String -> IO Answer
 day11_part1 input = do
     let stones = loadStones input
 --    print stones
     let final = foldr (\_ acc -> blink acc) stones ([1..25] :: [Int])
 --    print final
     let result = length final
-    return [result]
+    return (Ints [result])
 
 blink2 :: StoneMap -> StoneMap
 blink2 stones =
@@ -53,7 +55,7 @@ blink2 stones =
     where
         next :: [(Int, Int)] -> StoneMap -> StoneMap
         next [] acc = acc
-        {-       
+        {-
             1. If the stone is engraved with the number 0, it is replaced by a stone engraved with the number 1.
             2. If the stone is engraved with a number that has an even number of digits, it is replaced by two stones.
                 The left half of the digits are engraved on the new left stone, and the right half of the digits are
@@ -73,11 +75,11 @@ blink2 stones =
 
 
 -- Part 2
-day11_part2 :: String -> IO [Int]
+day11_part2 :: String -> IO Answer
 day11_part2 input = do
     let stones = Map.fromListWith (+) $ zip (loadStones input) (repeat 1)
 --    print stones
     let groups = foldr (\_ acc -> blink2 acc) stones ([1..75] :: [Int])
 --    print result
     let result = Map.foldr (+) 0 groups
-    return [result]
+    return (Ints [result])

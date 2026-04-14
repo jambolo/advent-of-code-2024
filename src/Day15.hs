@@ -7,12 +7,16 @@ import qualified Data.Array as Array
 import Data.Maybe (catMaybes, isNothing)
 import Data.List (group, sort)
 
+import Answer (Answer(..))
+
 type Array2OfChar = Array.Array (Int, Int) Char
 
 createMap :: [String] -> Array2OfChar
 createMap mapLines =
     let bottom = length mapLines - 1
-        right = length (head mapLines) - 1
+        right = case mapLines of
+            (row:_) -> length row - 1
+            []      -> error "Input has no rows"
         bounds = ((0, 0), (bottom, right))
         elements = [((i, j), mapLines !! i !! j) | i <- [0 .. bottom], j <- [0 .. right]]
     in Array.array bounds elements
@@ -27,7 +31,9 @@ printMap arr = do
 findRobot :: Array2OfChar -> (Int, Int)
 findRobot area =
     let ((top, left), (bottom, right)) = Array.bounds area
-        robot = head [(i, j) | i <- [top..bottom], j <- [left..right], area Array.! (i, j) == '@']
+        robot = case [(i, j) | i <- [top..bottom], j <- [left..right], area Array.! (i, j) == '@'] of
+            (p:_) -> p
+            []    -> error "No robot found"
     in robot
 
 move :: Array2OfChar -> (Int, Int) -> (Int, Int) -> Array2OfChar
@@ -77,7 +83,7 @@ coordinateSum area =
     in sum [i * 100 + j | i <- [top..bottom], j <- [left..right], area Array.! (i, j) == 'O']
 
 -- Part 1
-day15_part1 :: String -> IO [Int]
+day15_part1 :: String -> IO Answer
 day15_part1 input = do
     let (mapLines, stepLines) = break null (lines input)
     let area = createMap mapLines
@@ -89,7 +95,7 @@ day15_part1 input = do
     let area' = executeSteps area start steps
 --    printMap area'
     let result = coordinateSum area'
-    return [result]
+    return (Ints [result])
 
 symbol :: [[Char]] -> Int -> Int -> Char
 symbol mapLines i j =
@@ -106,7 +112,9 @@ symbol mapLines i j =
 createMap2 :: [String] -> Array2OfChar
 createMap2 mapLines =
     let bottom = length mapLines - 1
-        right = length (head mapLines) * 2 - 1
+        right = case mapLines of
+            (row:_) -> length row * 2 - 1
+            []      -> error "Input has no rows"
         bounds = ((0, 0), (bottom, right))
         elements = [((i, j), symbol mapLines i j) | i <- [0 .. bottom], j <- [0 .. right]]
     in Array.array bounds elements
@@ -124,7 +132,7 @@ moveBox area f0 t0 =
     in (area Array.// [(f0, '.'), (f1, '.')]) Array.// [(t0, '['), (t1, ']')]
 
 dedup :: [(Int, Int)] -> [(Int, Int)]
-dedup = map head . group . sort
+dedup = concatMap (take 1) . group . sort
 
 moveBoxes2 :: Array2OfChar -> [(Int, Int)] -> (Int, Int) -> Maybe Array2OfChar
 moveBoxes2 area from (di, dj) =
@@ -185,7 +193,7 @@ coordinateSum2 area =
 
 
 -- Part 2
-day15_part2 :: String -> IO [Int]
+day15_part2 :: String -> IO Answer
 day15_part2 input = do
     let (mapLines, stepLines) = break null (lines input)
     let area = createMap2 mapLines
@@ -197,4 +205,4 @@ day15_part2 input = do
     let area' = executeSteps2 area start steps
 --    printMap area'
     let result = coordinateSum2 area'
-    return [result]
+    return (Ints [result])

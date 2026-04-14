@@ -5,6 +5,8 @@ module Day09 (
 
 import Data.Char (digitToInt)
 
+import Answer (Answer(..))
+
 -- Parses a string of digits into a list of integers
 parseDigits :: String -> [Int]
 parseDigits = map digitToInt . filter (/= '\n')
@@ -40,13 +42,13 @@ defrag sectors =
 checksum :: [Int] -> Int
 checksum = sum . filter (>= 0) . zipWith (\i x -> if x >= 0 then i * x else x) [0..]
 
-day09_part1 :: String -> IO [Int]
+day09_part1 :: String -> IO Answer
 day09_part1 input = do
     let digits = parseDigits input
     let sectors = buildSectorList digits
     let defragged = defrag sectors
     let result = checksum defragged
-    return [result]
+    return (Ints [result])
 
 data Bucket = Bucket {
     size :: Int,
@@ -94,9 +96,11 @@ defrag2 buckets =
             in case break (\b -> value b < 0 && size b >= size r) left of
                 (_, []) -> next acc rs'
                 (before, empty:after) ->
-                    let current = head right
-                        acc' = before ++ fillEmptyBucket empty r ++ after ++ [emptyBucket current] ++ tail right
-                    in next acc' rs'
+                    case right of
+                        (current:rightRest) ->
+                            let acc' = before ++ fillEmptyBucket empty r ++ after ++ [emptyBucket current] ++ rightRest
+                            in next acc' rs'
+                        [] -> next acc rs'
 
 checksum2 :: [Bucket] -> Int
 checksum2 buckets =
@@ -107,7 +111,7 @@ checksum2 buckets =
             in (i + size', value' * sumOfIndexes + acc)
         ) (0, 0) buckets
 
-day09_part2 :: String -> IO [Int]
+day09_part2 :: String -> IO Answer
 day09_part2 input = do
     let digits = parseDigits input
     let buckets = buildBucketList digits
@@ -117,4 +121,4 @@ day09_part2 input = do
 --    print $ length defragged
 --    printBuckets defragged
     let result = checksum2 defragged
-    return [result]
+    return (Ints [result])

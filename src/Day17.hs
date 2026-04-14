@@ -11,6 +11,8 @@ import Data.List.Split (splitOn)
 --import Debug.Trace ( trace, traceShow )
 import Text.Regex.TDFA ( (=~) )
 
+import Answer (Answer(..))
+
 type Program = [Int]
 type Registers = Array.Array Int Int
 
@@ -112,25 +114,26 @@ execute state0 program =
         exec :: State -> State
         exec state
                 | ip state >= length program = state
-                | otherwise = 
+                | otherwise =
                     let i = ip state
                         opcode = program !! i
                         operand = program !! (i + 1)
                         instruction = instructions Array.! opcode
                         state' = instruction operand state
                     in exec state'
+
 -- Part 1
-day17_part1 :: String -> IO [Int]
+day17_part1 :: String -> IO Answer
 day17_part1 input = do
     let (registerLines, programLines) = break null $ lines input
     let registers = Array.listArray (0, 2) $ map (\s -> read (s =~ "[0-9]+") :: Int) registerLines :: Registers
 --    print registers
-    let program = map (\s -> read s :: Int) $ splitOn "," $ dropWhile (not . isDigit) (head $ tail programLines) :: Program
+    let program = case programLines of
+            (_:l:_) -> map (\s -> read s :: Int) $ splitOn "," $ dropWhile (not . isDigit) l :: Program
+            _       -> error "Not enough program lines"
 --    print program
     let result = execute (State registers 0 []) program
-    putStrLn ""
-    print $ intercalate "," $ map show result
-    return result
+    return (Str (intercalate "," $ map show result))
 
 {-
 disassemble :: Program -> [String]
@@ -153,7 +156,9 @@ disassemble program =
 
 search :: Program -> Int -> [Int] -> Int
 search program i0 v =
-    i0 + head (filter (\i -> execute (State (Array.listArray (0, 2) [i0 + i, 0, 0]) 0 []) program == v) [0..])
+    case filter (\i -> execute (State (Array.listArray (0, 2) [i0 + i, 0, 0]) 0 []) program == v) [0..] of
+        (x:_) -> i0 + x
+        []    -> error "search: no solution found"
 
 solve :: Program -> Int
 solve program =
@@ -166,14 +171,16 @@ solve program =
                     right' = p : right
                     i1 = search program (i0 * 8) right'
                 in next i1 right' left'
-    
+
 -- Part 2
-day17_part2 :: String -> IO [Int]
+day17_part2 :: String -> IO Answer
 day17_part2 input = do
     let (_, programLines) = break null $ lines input
-    let program = map (\s -> read s :: Int) $ splitOn "," $ dropWhile (not . isDigit) (head $ tail programLines) :: Program
+    let program = case programLines of
+            (_:l:_) -> map (\s -> read s :: Int) $ splitOn "," $ dropWhile (not . isDigit) l :: Program
+            _       -> error "Not enough program lines"
 --    print program
 --    let asm = disassemble program
 --    mapM_ putStrLn asm
     let result = solve program
-    return [result]
+    return (Ints [result])

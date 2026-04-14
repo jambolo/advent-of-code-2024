@@ -6,6 +6,8 @@ module Day24 (
 import Data.Bits ( ( .&. ), ( .|. ), xor )
 --import Debug.Trace ( trace, traceShow )
 
+import Answer (Answer(..))
+
 compose :: [Int] -> Int
 compose = foldr (\z acc -> acc * 2 + z) 0
 
@@ -27,7 +29,7 @@ part1_example_1_execute =
 
 {-
 part1_example_2_execute :: Int
-part1_example_2_execute = 
+part1_example_2_execute =
     let x00 = 1
         x01 = 0
         x02 = 1
@@ -395,15 +397,12 @@ part1_execute =
     in compose [z00, z01, z02, z03, z04, z05, z06, z07, z08, z09, z10, z11, z12, z13, z14, z15, z16, z17, z18, z19, z20, z21, z22, z23, z24, z25, z26, z27, z28, z29, z30, z31, z32, z33, z34, z35, z36, z37, z38, z39, z40, z41, z42, z43, z44, z45]
 
 -- Part 1
-day24_part1 :: String -> IO [Int]
+day24_part1 :: String -> IO Answer
 day24_part1 _ = do
     let result = part1_execute
-    return [result]
+    return (Ints [result])
 
--- Part 2
-day24_part2 :: String -> IO [Int]
+-- Part 2: swapped outputs found by inspection
+day24_part2 :: String -> IO Answer
 day24_part2 _ = do
-    -- swapped outputs found by inspection
-    putStrLn ""
-    putStrLn "gbs,hwq,thm,wrm,wss,z08,z22,z29"
-    return []
+    return (Str "gbs,hwq,thm,wrm,wss,z08,z22,z29")

@@ -8,6 +8,7 @@ import qualified Data.Set as Set
 import Data.List.Split (splitOn)
 import Data.List (sortBy)
 
+import Answer (Answer(..))
 
 type AfterMap = Map.Map Int [Int]
 type FoundSet = Set.Set Int
@@ -15,12 +16,14 @@ type FoundSet = Set.Set Int
 splitIntoSections :: String -> ([String], [String])
 splitIntoSections input =
     let (before, after) = break null (lines input)
-    in (before, tail after)
+    in (before, case after of (_:ys) -> ys; [] -> [])
 
 parseOrderingEntry :: String -> (Int, Int)
 parseOrderingEntry s =
-    let entry = map read (splitOn "|" s) 
-    in (head entry, last entry)
+    let entry = map read (splitOn "|" s)
+    in case entry of
+        (x:_) -> (x, last entry)
+        []     -> error "parseOrderingEntry: empty entry"
 
 buildAfterMap :: [(Int, Int)] -> AfterMap
 buildAfterMap  = foldr (\(k, v) -> Map.insertWith (++) k [v]) Map.empty
@@ -40,22 +43,22 @@ orderIsValid afterMap =
     where
         go :: FoundSet -> [Int] -> Bool
         go _ [] = True
-        go found (x:xs) = 
+        go found (x:xs) =
             case Map.lookup x afterMap of
                 -- If the page is in the ordering rules
-                Just after -> 
+                Just after ->
                     -- then if any of the after values have already been encountered
                     not (anyInFound found after) && go (Set.insert x found) xs
                 -- If the page is not in the ordering rules then just continue
                 Nothing -> go (Set.insert x found) xs
 
-day05_part1 :: String -> IO [Int]
+day05_part1 :: String -> IO Answer
 day05_part1 input = do
     let (orderingInput, updatesInput) = splitIntoSections input
         afterMap = buildAfterMap $ map parseOrderingEntry orderingInput
         updates = map parseUpdate updatesInput
         result = sum $ map middleValue $ filter (orderIsValid afterMap) updates
-    return [result]
+    return (Ints [result])
 
 pageCompare :: AfterMap -> Int -> Int -> Ordering
 pageCompare afterMap x y
@@ -67,11 +70,11 @@ pageCompare afterMap x y
 sortUpdate :: AfterMap -> [Int] -> [Int]
 sortUpdate afterMap = sortBy (pageCompare afterMap)
 
-day05_part2 :: String -> IO [Int]
+day05_part2 :: String -> IO Answer
 day05_part2 input = do
     let (orderingInput, updatesInput) = splitIntoSections input
         afterMap = buildAfterMap $ map parseOrderingEntry orderingInput
         updates = map parseUpdate updatesInput
         sortedInvalidUpdates = map (sortUpdate afterMap) $ filter (not . orderIsValid afterMap) updates
         result = sum $ map middleValue sortedInvalidUpdates
-    return [result]
+    return (Ints [result])

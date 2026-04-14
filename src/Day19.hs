@@ -8,6 +8,8 @@ import Data.List.Split (splitOn)
 import Data.List (dropWhileEnd)
 import Data.Char (isSpace)
 
+import Answer (Answer(..))
+
 -- Trim leading and trailing whitespace
 trim :: String -> String
 trim = dropWhileEnd isSpace . dropWhile isSpace
@@ -18,9 +20,10 @@ splitAndTrim str delim = map trim (splitOn delim str)
 
 loadData :: String -> ([String], [String])
 loadData input =
-    (splitAndTrim (head patterns) ",", tail designs)
-    where
-        (patterns, designs) = break null $ lines input
+    let (patterns, designs) = break null $ lines input
+    in case (patterns, designs) of
+        (p:_, _:d) -> (splitAndTrim p ",", d)
+        _         -> error "Invalid input to loadData"
 
 possible :: [String] -> String -> Bool
 possible patterns design =
@@ -31,29 +34,16 @@ possible patterns design =
         ) patterns
 
 -- Part 1
-day19_part1 :: String -> IO [Int]
+day19_part1 :: String -> IO Answer
 day19_part1 input = do
     let (patterns, designs) = loadData input
 --    print patterns
 --    print designs
 
     let result = length $ filter id $ map (possible patterns) designs
-    return [result]
-
-countPossible :: [String] -> String -> Int
-countPossible patterns =
-    count
-    where
-        count :: String -> Int
-        count [] = 1
-        count d =
-            foldr (\p acc ->
-                if length p <= length d && p == take (length p) d
-                    then count (drop (length p) d) + acc
-                    else acc
-                ) 0 patterns
+    return (Ints [result])
 
 -- Part 2
-day19_part2 :: String -> IO [Int]
-day19_part2 input = do
-    return []
+day19_part2 :: String -> IO Answer
+day19_part2 _input = do
+    return (Ints [])

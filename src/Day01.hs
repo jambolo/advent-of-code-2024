@@ -5,6 +5,8 @@ module Day01 (
 
 import Data.List (sort)
 
+import Answer (Answer(..))
+
 sumOfDifferences :: ([Int], [Int]) -> Int
 sumOfDifferences (xs, ys) = sum $ zipWith (\x y -> abs (x - y)) xs ys
 
@@ -18,14 +20,14 @@ parseLines input = foldr parseLine ([], []) (lines input)
 sortPairs :: ([Int], [Int]) -> ([Int], [Int])
 sortPairs (left, right) = (sort left, sort right)
 
-day01_part1 :: String -> IO [Int]
+day01_part1 :: String -> IO Answer
 day01_part1 input = do
     let pairs = parseLines input
 --    print pairs
     let sorted = sortPairs pairs
 --    print sorted
     let result = sumOfDifferences sorted
-    return [result]
+    return (Ints [result])
 
 
 countOccurrences :: ([Int], [Int]) -> [(Int, Int)]
@@ -36,11 +38,11 @@ countOccurrences (left, right) = map (\l -> (l, count l right)) left
 similarity :: [(Int, Int)] -> Int
 similarity = foldr (\(x, y) acc -> x * y + acc) 0
 
-day01_part2 :: String -> IO [Int]
+day01_part2 :: String -> IO Answer
 day01_part2 input = do
     let pairs = parseLines input
 --    print pairs
     let counts = countOccurrences pairs
 --    print counts
     let result = similarity counts
-    return [result]
+    return (Ints [result])

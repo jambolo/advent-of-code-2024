@@ -7,6 +7,8 @@ import qualified Data.Array as Array
 import qualified Data.Map as Map
 import qualified Data.Set as Set
 
+import Answer (Answer(..))
+
 type Array2OfChar = Array.Array (Int, Int) Char
 type AntennaMap = Map.Map Char [(Int, Int)]
 type NodeSet = Set.Set (Int, Int)
@@ -15,7 +17,9 @@ createMap :: String -> Array2OfChar
 createMap input =
     let a = lines input
         bottom = length a - 1
-        right = length (head a) - 1
+        right = case a of
+            (row:_) -> length row - 1
+            []      -> error "Input has no rows"
         bounds = ((0, 0), (bottom, right))
         elements = [((i, j), a !! i !! j) | i <- [0 .. bottom], j <- [0 .. right]]
     in Array.array bounds elements
@@ -62,13 +66,13 @@ findAntinodes area antennas =
                 else acc
         ) Set.empty (concatMap permutations (Map.elems antennas))
 
-day08_part1 :: String -> IO [Int]
+day08_part1 :: String -> IO Answer
 day08_part1 input = do
     let area = createMap input
     let antennas = findAntennas area
     let antinodes = findAntinodes area antennas
     let result = length antinodes
-    return [result]
+    return (Ints [result])
 
 harmonic :: Array2OfChar -> ((Int, Int), (Int, Int)) -> [(Int, Int)]
 harmonic area ((x1, y1), (x2, y2)) =
@@ -89,10 +93,10 @@ findHarmonics area antennas =
             Set.union (Set.fromList hs) acc
     ) Set.empty (concatMap permutations (Map.elems antennas))
 
-day08_part2 :: String -> IO [Int]
+day08_part2 :: String -> IO Answer
 day08_part2 input = do
     let area = createMap input
     let antennas = findAntennas area
     let harmonics = findHarmonics area antennas
     let result = length harmonics
-    return [result]
+    return (Ints [result])

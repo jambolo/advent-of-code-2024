@@ -7,6 +7,8 @@ import Data.List.Split (splitOn)
 import qualified Data.Set as Set
 --import Debug.Trace ( trace, traceShow )
 
+import Answer (Answer(..))
+
 type Node = String
 type Edge = (String, String)
 type VisitedSet = Set.Set Node
@@ -32,17 +34,15 @@ findCyclesFrom start nodes edges =
                     let visited' = Set.insert node visited
                         path' = node : path
                         adjacents = filter (\n -> n == start || not (Set.member n visited')) $ findAdjacents node nodes edges
-                    in 
+                    in
                         foldr (\n cycles -> next (depth + 1) n visited' path' ++ cycles) [] adjacents
 
 findCycles :: [Node] -> [Edge] -> [[Node]]
 findCycles [] _ = []
 findCycles [_] _ = []
 findCycles [_, _] _ = []
-findCycles nodes edges =
-    let node = head nodes
-        nodes' = tail nodes
-    in findCyclesFrom node nodes edges ++ findCycles nodes' edges
+findCycles nodes@(node:nodes') edges =
+    findCyclesFrom node nodes edges ++ findCycles nodes' edges
 
 dedupCycles :: [[Node]] -> CycleSet
 dedupCycles cycles =
@@ -51,11 +51,11 @@ dedupCycles cycles =
 -- Returns the number of cycles containing a node starting with 'T'
 countCyclesWithANodeStartingWithT :: CycleSet -> Int
 countCyclesWithANodeStartingWithT cycles =
-    length $ filter (any (\n -> head n == 't')) $ Set.toList cycles
+    length $ filter (any (\n -> case n of (c:_) -> c == 't'; [] -> False)) $ Set.toList cycles
 
 -- Part 1
 
-day23_part1 :: String -> IO [Int]
+day23_part1 :: String -> IO Answer
 day23_part1 input = do
     let edges = map (\e -> (
                 case  splitOn "-" e of
@@ -69,9 +69,9 @@ day23_part1 input = do
     let cycles = dedupCycles $ findCycles nodes edges
 --    print (length cycles, cycles)
     let result = countCyclesWithANodeStartingWithT cycles
-    return [result]
+    return (Ints [result])
 
 -- Part 2
-day23_part2 :: String -> IO [Int]
-day23_part2 input = do
-    return []
+day23_part2 :: String -> IO Answer
+day23_part2 _input = do
+    return (Ints [])

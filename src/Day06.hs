@@ -7,6 +7,8 @@ import qualified Data.Array as Array
 import qualified Data.Map as Map
 import qualified Data.Set as Set
 
+import Answer (Answer(..))
+
 -- Visited is a dictionary of locations and their facings
 type Array2OfChar = Array.Array (Int, Int) Char
 type FacingSet = Set.Set Char
@@ -16,14 +18,16 @@ createMap :: String -> Array2OfChar
 createMap input =
     let a = lines input
         bottom = length a - 1
-        right = length (head a) - 1
+        right = case a of
+            (row:_) -> length row - 1
+            []      -> error "Input has no rows"
         bounds = ((0, 0), (bottom, right))
         elements = [((i, j), a !! i !! j) | i <- [0 .. bottom], j <- [0 .. right]]
     in Array.array bounds elements
 
 -- Finds the location of '^', '<', 'v', or '>' in area
 findStart :: Array2OfChar -> Maybe ((Int, Int), Char)
-findStart area = 
+findStart area =
     foldr (\idx acc ->
         let symbol = area Array.! idx
         in if symbol `elem` ">^<v" then Just (idx, symbol) else acc
@@ -44,7 +48,7 @@ step (i, j) facing = case facing of
     '<' -> (i    , j - 1)
     'v' -> (i + 1, j)
     _ -> error "Invalid facing"
-    
+
 
 travel :: Array2OfChar -> (Int, Int) -> Char -> VisitedMap
 travel area start initialFacing =
@@ -62,14 +66,14 @@ travel area start initialFacing =
                     else go location' facing visited'
                 else visited'
 
-day06_part1 :: String -> IO [Int]
+day06_part1 :: String -> IO Answer
 day06_part1 input = do
     let area = createMap input
         (start, facing) = case findStart area of
             Just (s, f) -> (s, f)
             _ -> error "No starting point found"
     let visited = travel area start facing
-    return [length visited]
+    return (Ints [length visited])
 
 findCycle :: Array2OfChar -> (Int, Int) -> Char -> Bool
 findCycle area start initialFacing = go start initialFacing Map.empty
@@ -86,7 +90,7 @@ findCycle area start initialFacing = go start initialFacing Map.empty
                         then go location (rightTurn facing) visited' -- don't move, just turn right
                         else go location' facing visited' -- move to next cell
 
-day06_part2 :: String -> IO [Int]
+day06_part2 :: String -> IO Answer
 day06_part2 input = do
     let area = createMap input
         (start, facing) = case findStart area of
@@ -94,4 +98,4 @@ day06_part2 input = do
             _ -> error "No starting point found"
     let visited = travel area start facing
     let result = length $ filter id $ [findCycle (area Array.// [(k, '#')]) start facing | k <- Map.keys visited]
-    return [result]
+    return (Ints [result])

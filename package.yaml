@@ -44,6 +44,7 @@ ghc-options:
 library:
   source-dirs: src
   exposed-modules:
+  - Answer
   - Day01
   - Day02
   - Day03

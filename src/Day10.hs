@@ -7,6 +7,8 @@ import qualified Data.Array as Array
 import Data.Char (digitToInt)
 import qualified Data.Set as Set
 
+import Answer (Answer(..))
+
 type Array2OfInts = Array.Array (Int, Int) Int
 type LocationSet = Set.Set (Int, Int)
 
@@ -15,7 +17,9 @@ createMap :: String -> Array2OfInts
 createMap input =
     let a = lines input
         bottom = length a - 1
-        right = length (head a) - 1
+        right = case a of
+            (row:_) -> length row - 1
+            []      -> error "Input has no rows"
         bounds = ((0, 0), (bottom, right))
         elements = [((i, j), digitToInt (a !! i !! j)) | i <- [0 .. bottom], j <- [0 .. right]]
     in Array.array bounds elements
@@ -60,7 +64,7 @@ scoreTrailheads :: Array2OfInts -> [(Int, Int)] -> [Int]
 scoreTrailheads area = map (scoreTrailhead area)
 
 -- Part 1
-day10_part1 :: String -> IO [Int]
+day10_part1 :: String -> IO Answer
 day10_part1 input = do
     let area = createMap input
 --    printMap area
@@ -69,7 +73,7 @@ day10_part1 input = do
     let scores = scoreTrailheads area trailheads
 --    print scores
     let result = sum scores
-    return [result]
+    return (Ints [result])
 
 -- Returns the rating for a trailhead
 rateTrailhead :: Array2OfInts -> (Int, Int) -> Int
@@ -97,7 +101,7 @@ rateTrailheads :: Array2OfInts -> [(Int, Int)] -> [Int]
 rateTrailheads area = map $ rateTrailhead area
 
 -- Part 2
-day10_part2 :: String -> IO [Int]
+day10_part2 :: String -> IO Answer
 day10_part2 input = do
     let area = createMap input
 --    printMap area
@@ -106,4 +110,4 @@ day10_part2 input = do
     let ratings = rateTrailheads area trailheads
 --    print ratings
     let result = sum ratings
-    return [result]
+    return (Ints [result])

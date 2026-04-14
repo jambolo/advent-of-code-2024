@@ -6,7 +6,8 @@ module Day16 (
 import qualified Data.Array as Array
 import qualified Data.HashSet as HashSet
 import Data.Graph.AStar
---import Data.Hashable (Hashable)
+
+import Answer (Answer(..))
 
 type Array2OfChar = Array.Array (Int, Int) Char
 type Point = (Int, Int, Int)
@@ -17,7 +18,9 @@ createMap :: String -> Array2OfChar
 createMap input =
     let a = lines input
         bottom = length a - 1
-        right = length (head a) - 1
+        right = case a of
+            (row:_) -> length row - 1
+            []      -> error "Input has no rows"
         bounds = ((0, 0), (bottom, right))
         elements = [((i, j), a !! i !! j) | i <- [0 .. bottom], j <- [0 .. right]]
     in Array.array bounds elements
@@ -84,7 +87,7 @@ buildNeighborhood area =
     in foldr addNeighbors neighborhood allAccessible
 
 -- Part 1
-day16_part1 :: String -> IO [Int]
+day16_part1 :: String -> IO Answer
 day16_part1 input = do
     let area = createMap input
 --    print $ Array.bounds area
@@ -98,11 +101,14 @@ day16_part1 input = do
     case path of
         Just p  -> do
 --            putStrLn $ "Path found: " ++ show p
-            let totalCost = cost start (head p) + foldl (\acc (p1, p2) -> acc + cost p1 p2) 0 (zip p (tail p))
-            return [totalCost]
+            case p of
+                (p0:ps) ->
+                    let totalCost = cost start p0 + foldl (\acc (p1, p2) -> acc + cost p1 p2) 0 (zip (p0:ps) ps)
+                    in return (Ints [totalCost])
+                [] -> error "No path found!"
         Nothing -> error "No path found!"
 
 -- Part 2
-day16_part2 :: String -> IO [Int]
-day16_part2 input = do
-    return []
+day16_part2 :: String -> IO Answer
+day16_part2 _input = do
+    return (Ints [])

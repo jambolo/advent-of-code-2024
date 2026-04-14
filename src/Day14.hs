@@ -5,6 +5,8 @@ module Day14 (
 
 import Text.Regex.TDFA
 
+import Answer (Answer(..))
+
 data Robot = Robot {
     p :: (Int, Int),
     v :: (Int, Int)
@@ -68,7 +70,7 @@ safetyFactor (q1, q2, q3, q4) = q1 * q2 * q3 * q4
 
 
 -- Part 1
-day14_part1 :: String -> IO [Int]
+day14_part1 :: String -> IO Answer
 day14_part1 input = do
     let robots = loadRobots input
 --    print robots
@@ -79,7 +81,7 @@ day14_part1 input = do
     let c = census movedRobots
 --    print c
     let result = safetyFactor c
-    return [result]
+    return (Ints [result])
 
 -- Returns a score for the robots weighted such that robots closer to the center are worth more
 evaluate :: [Robot] -> Int
@@ -101,10 +103,10 @@ simulate robots limit = go 1 0 0
 
 
 -- Part 2
-day14_part2 :: String -> IO [Int]
+day14_part2 :: String -> IO Answer
 day14_part2 input = do
     let robots = loadRobots input
     let count = simulate robots 10000
 --    let movedRobots = moveRobots count robots
 --    print movedRobots
-    return [count]
+    return (Ints [count])

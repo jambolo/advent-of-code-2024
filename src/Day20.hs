@@ -6,6 +6,8 @@ module Day20 (
 --import Debug.Trace ( trace )
 import qualified Data.Array as Array
 
+import Answer (Answer(..))
+
 type Array2OfChar = Array.Array (Int, Int) Char
 type Array2OfInt = Array.Array (Int, Int) Int
 
@@ -13,7 +15,9 @@ createMap :: String -> Array2OfChar
 createMap input =
     let a = lines input
         bottom = length a - 1
-        right = length (head a) - 1
+        right = case a of
+            (row:_) -> length row - 1
+            []      -> error "Input has no rows"
         bounds = ((0, 0), (bottom, right))
         elements = [((i, j), a !! i !! j) | i <- [0 .. bottom], j <- [0 .. right]]
     in Array.array bounds elements
@@ -31,7 +35,7 @@ printArray2OfInt :: Array2OfInt -> IO ()
 printArray2OfInt distances = do
     let ((top, left), (bottom, right)) = Array.bounds distances
     mapM_ (\i -> do
-        mapM_ (\j -> 
+        mapM_ (\j ->
             let d = distances Array.! (i, j)
             in putStr ((if d < 0 then "##" else if d >= 0 && d < 10 then " " ++ show d else show d) ++ " ")) [left..right]
         putChar '\n'
@@ -45,7 +49,9 @@ fillArray bounds value =
 
 findChar :: Array2OfChar -> Char -> (Int, Int)
 findChar area c =
-    head [p | p <- Array.indices area, area Array.! p == c]
+    case [p | p <- Array.indices area, area Array.! p == c] of
+        (x:_) -> x
+        []    -> error "findChar: character not found"
 
 distance :: (Int, Int) -> (Int, Int) -> Int
 distance (i1, j1) (i2, j2) = abs (i1 - i2) + abs (j1 - j2)
@@ -87,7 +93,7 @@ findShortcuts distances minShortcut time =
         ) [] [p | p <- Array.indices distances, distances Array.! p >= 0]
 
 -- Part 1
-day20_part1 :: String -> IO [Int]
+day20_part1 :: String -> IO Answer
 day20_part1 input = do
     let area = createMap input
 --    printArray2OfChar area
@@ -101,10 +107,10 @@ day20_part1 input = do
     let shortcuts = findShortcuts distances 100 2
 --    print shortcuts
     let result = length shortcuts
-    return [result]
+    return (Ints [result])
 
 -- Part 2
-day20_part2 :: String -> IO [Int]
+day20_part2 :: String -> IO Answer
 day20_part2 input = do
     let area = createMap input
 --    printArray2OfChar area
@@ -118,4 +124,4 @@ day20_part2 input = do
     let shortcuts = findShortcuts distances 100 20
 --    print shortcuts
     let result = length shortcuts
-    return [result]
+    return (Ints [result])

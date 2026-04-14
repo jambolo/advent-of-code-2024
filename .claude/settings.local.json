@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(stack build:*)",
+      "Bash(powershell.exe -Command \"Get-Command stack | Select-Object -ExpandProperty Source\")",
+      "Bash(/c/ghcup/bin/stack build:*)",
+      "Bash(stack exec:*)",
+      "Bash(stack test:*)"
+    ]
+  }
+}
